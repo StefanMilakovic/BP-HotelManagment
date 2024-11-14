@@ -1,5 +1,6 @@
 package edu.hotelmanagment;
 
+import edu.hotelmanagment.gui.EmployeeManagementWindow;
 import edu.hotelmanagment.gui.ReservationManagementWindow;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -59,8 +60,7 @@ public class HelloApplication extends Application
     }
 
     private void handleEmployees() {
-        System.out.println("Opening Employees window...");
-        // Otvori novi prozor za upravljanje zaposlenima
+        new EmployeeManagementWindow();
     }
 
     private void handleInvoices() {

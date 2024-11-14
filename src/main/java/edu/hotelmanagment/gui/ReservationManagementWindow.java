@@ -2,12 +2,8 @@ package edu.hotelmanagment.gui;
 
 import edu.hotelmanagment.model.*;
 
-import edu.hotelmanagment.model.Guest;
-import edu.hotelmanagment.model.Reservation;
-import edu.hotelmanagment.wrapper.WrapperEmployee;
-import edu.hotelmanagment.wrapper.WrapperGuest;
-import edu.hotelmanagment.wrapper.WrapperReservation;
-import edu.hotelmanagment.wrapper.WrapperRoom;
+
+import edu.hotelmanagment.wrapper.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,7 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+
 
 public class ReservationManagementWindow
 {
@@ -45,6 +41,8 @@ public class ReservationManagementWindow
     int roomID;
     AtomicInteger reservationTypeID = new AtomicInteger();
     AtomicInteger employeeID = new AtomicInteger();
+
+
     public ReservationManagementWindow()
     {
         Stage roomStage = new Stage();
@@ -59,13 +57,10 @@ public class ReservationManagementWindow
 
         TextField roomIdToDeleteField = new TextField();
         roomIdToDeleteField.setPromptText("Enter Room ID to delete");
-        //Integer roomIdToDelete = Integer.parseInt(roomIdToDeleteField.getText());
 
         addReservation.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;"); // Zeleno dugme sa crnim tekstom
         deleteReservation.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;"); // Crveno dugme sa crnim tekstom
         editReservation.setStyle("-fx-background-color: #ded93a;-fx-text-fill: black;");
-
-
 
         TableColumn<Reservation, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
         reservationIDColumn.setCellValueFactory(new PropertyValueFactory<>("ReservationID"));
@@ -341,7 +336,6 @@ public class ReservationManagementWindow
         dialogStage.show();
 
     }
-    //----------------------------------------------------------------------------------------------------------------------------
     private void addNewGuest()
     {
         Stage dialogStage = new Stage();
