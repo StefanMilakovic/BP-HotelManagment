@@ -111,6 +111,7 @@ public class WrapperReservation
 
     public static void update(Reservation r)
     {
+        System.out.println(r);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try

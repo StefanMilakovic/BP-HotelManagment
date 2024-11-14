@@ -10,6 +10,8 @@ import edu.hotelmanagment.wrapper.WrapperReservation;
 import edu.hotelmanagment.wrapper.WrapperRoom;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,6 +25,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ReservationManagementWindow
 {
@@ -47,24 +50,20 @@ public class ReservationManagementWindow
         Stage roomStage = new Stage();
         roomStage.setTitle("Reservation Management");
 
-
-
         Button addReservation = new Button("Add Reservation");
         Button deleteReservation = new Button("Delete Reservation");
         Button editReservation = new Button("Edit Reservation");
-        addReservation.setOnAction(e -> handleAddReservation());
-        //deleteReservation.setOnAction(e -> handleDeleteReservation());
+        addReservation.setOnAction(e -> addNewReservation());
+        editReservation.setOnAction(e-> editReservation());
+        deleteReservation.setOnAction(e -> deleteReservation());
 
         TextField roomIdToDeleteField = new TextField();
         roomIdToDeleteField.setPromptText("Enter Room ID to delete");
         //Integer roomIdToDelete = Integer.parseInt(roomIdToDeleteField.getText());
 
-        addReservation.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: black;"); // Zeleno dugme sa crnim tekstom
-        deleteReservation.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: black;"); // Crveno dugme sa crnim tekstom
-        editReservation.setStyle("-fx-background-color: #ded93a;");
-
-
-
+        addReservation.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;"); // Zeleno dugme sa crnim tekstom
+        deleteReservation.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;"); // Crveno dugme sa crnim tekstom
+        editReservation.setStyle("-fx-background-color: #ded93a;-fx-text-fill: black;");
 
 
 
@@ -119,17 +118,14 @@ public class ReservationManagementWindow
         roomStage.show();
 
     }
-    private void handleAddReservation()
-    {
-        addNewReservation();
-    }
 
     private void addNewReservation()
     {
-
-
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Add Reservation");
+
+        guestTableView.getSelectionModel().clearSelection();
+        roomTableView.getSelectionModel().clearSelection();
 
         Label headerLabel = new Label("Select a guest:");
         headerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
@@ -323,17 +319,16 @@ public class ReservationManagementWindow
         Button addReservationButton = new Button("Add Reservation");
 
         addReservationButton.setStyle("-fx-font-size: 14px; -fx-background-color: #5fa62d; -fx-text-fill: white;");
-        VBox vbox = new VBox(10);  // Razmak između elemenata je 10px
-        vbox.setAlignment(Pos.CENTER);  // Poravnaj sve elemente na sredinu
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.CENTER);
 
         vbox.getChildren().addAll(separator2, addReservationButton);
 
         addReservationButton.setOnAction(e -> {
-            //System.out.println("Add Reservation button clicked!");
-            // Ovde možete pozvati metodu za dodavanje rezervacije//---------------------------------
             WrapperReservation.insert(new Reservation(checkInDate,checkOutDate,numberOfGuests.get(),guestID.get(),roomID,reservationTypeID.get(),employeeID.get()));
+            dialogStage.close();
+            reloadData();
         });
-
 
         VBox mainLayout = new VBox(10);
         mainLayout.setPadding(new Insets(20));
@@ -479,7 +474,165 @@ public class ReservationManagementWindow
         dateStage.show();
     }
 
+    private void editReservation()
+    {
+        Stage editReservationStage = new Stage();
+        editReservationStage.setTitle("Edit Reservation");
+        final Reservation[] r = {new Reservation()};
+        final int[] reservationID = {-1};
 
+        Label selectReservationLabel = new Label("Select Reservation:");
+        selectReservationLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        TextField reservationIDField = new TextField();
+        reservationIDField.setMaxWidth(150);
+        reservationIDField.setPromptText("Enter Reservation ID to edit");
+
+        Button confirmButton = new Button("Confirm");
+
+        confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    System.out.println("Reservation ID:"+reservationIDField.getText());
+                    reservationID[0] =Integer.parseInt(reservationIDField.getText());
+                    r[0] =WrapperReservation.selectById(reservationID[0]);
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid reservation ID entered!");
+                }
+            }
+        });
+
+        Separator separator = new Separator();
+
+        Label selectDateLabel = new Label("Select Dates");
+        selectDateLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        Button selectDates = new Button("Select Dates");
+        selectDates.setOnAction(a -> {
+            pickDates();
+
+        });
+
+        Separator dateSeparator = new Separator();
+
+        Label selectRoomLabel = new Label("Select a room:");
+        selectRoomLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        TableColumn<Room, Integer> roomIDColumn = new TableColumn<>("Room ID");
+        roomIDColumn.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+
+        TableColumn<Room, Integer> roomNumberColumn = new TableColumn<>("Room Number");
+        roomNumberColumn.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+
+        TableColumn<Room, Integer> floorColumn = new TableColumn<>("Floor");
+        floorColumn.setCellValueFactory(new PropertyValueFactory<>("floor"));
+
+        TableColumn<Room, String> roomTypeColumn = new TableColumn<>("Room Type");
+        roomTypeColumn.setCellValueFactory(new PropertyValueFactory<>("roomType"));
+
+        TableColumn<Room, String> bedTypeColumn = new TableColumn<>("Bed Type");
+        bedTypeColumn.setCellValueFactory(new PropertyValueFactory<>("bedType"));
+
+        TableColumn<Room, String> priceColumn = new TableColumn<>("Price Per Night");
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("pricePerNight"));
+
+        TableColumn<Room, String> amenitiesColumn = new TableColumn<>("Amenities");
+        amenitiesColumn.setCellValueFactory(new PropertyValueFactory<>("amenities"));
+
+        roomTableView.getColumns().addAll(roomIDColumn, roomNumberColumn, floorColumn, roomTypeColumn, bedTypeColumn,priceColumn,amenitiesColumn);
+
+        roomTableView.setFixedCellSize(25);
+        roomTableView.setPrefHeight(roomTableView.getFixedCellSize() * 3+28);
+
+        roomTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        roomTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                System.out.println("Selected Room ID: " + newValue.getRoomID());
+                r[0].setRoomID(newValue.getRoomID());
+            }
+        });
+        roomTableView.setRowFactory(tv -> {
+            TableRow<Room> row = new TableRow<>();
+            row.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+                if (isNowSelected) {
+                    row.setStyle("-fx-background-color: #5fa62d;");
+                } else {
+                    row.setStyle("");
+                }
+            });
+            return row;
+        });
+
+        Separator separator2 = new Separator();
+        Button updateReservationButton = new Button("Finish");
+
+        updateReservationButton.setStyle("-fx-font-size: 14px; -fx-background-color: #5fa62d; -fx-text-fill: white;");
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.CENTER);
+
+        vbox.getChildren().addAll(separator2, updateReservationButton);
+
+        updateReservationButton.setOnAction(e -> {
+            r[0].setCheckInDate(checkInDate);
+            r[0].setCheckOutDate(checkOutDate);
+            WrapperReservation.update(r[0]);
+            System.out.println(r[0]);
+            editReservationStage.close();
+            reloadData();
+        });
+
+        VBox mainLayout = new VBox(10);
+        mainLayout.setPadding(new Insets(20));
+        mainLayout.getChildren().addAll( selectReservationLabel,reservationIDField,confirmButton,separator,selectDateLabel,selectDates, dateSeparator, selectRoomLabel, roomTableView,separator2,vbox);
+
+        Scene scene = new Scene(mainLayout, 650, 430);
+        editReservationStage.setScene(scene);
+        editReservationStage.show();
+    }
+
+    private void deleteReservation()
+    {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Delete Reservation");
+
+        double textFieldWidth = 100;
+
+        Label reservationIdLabel = new Label("Reservation ID:");
+        TextField reservationIdTextField = new TextField();
+        reservationIdTextField.setPrefWidth(textFieldWidth);
+
+        Button deleteButton = new Button("Delete");
+        deleteButton.setOnAction(e -> {
+            String roomIdText = reservationIdTextField.getText();
+            if (roomIdText.isEmpty()) {
+                System.out.println("Please enter a Reservation ID.");
+            } else {
+                int reservationId = Integer.parseInt(roomIdText);
+                WrapperReservation.delete(reservationId);
+                reloadData();
+                dialogStage.close();
+            }});
+
+        VBox buttonBox = new VBox(10, deleteButton); // Button with spacing
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+
+        GridPane formGrid = new GridPane();
+        formGrid.setVgap(10);
+        formGrid.setHgap(10);
+        formGrid.setPadding(new Insets(20));
+
+        formGrid.add(reservationIdLabel, 0, 0);
+        formGrid.add(reservationIdTextField, 1, 0);
+        formGrid.add(buttonBox, 0, 1, 2, 1); // Center the button and span two columns
+
+        Scene dialogScene = new Scene(formGrid, 250, 110); // Adjusted size for Room ID input
+        dialogStage.setScene(dialogScene);
+
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.showAndWait();
+    }
     private void reloadGuest() {
         guests.clear();
         guests=FXCollections.observableArrayList(WrapperGuest.selectAll());  // Metoda koja učitava podatke iz baze
@@ -490,12 +643,10 @@ public class ReservationManagementWindow
         reservations=FXCollections.observableArrayList(WrapperReservation.selectAll());  // Metoda koja učitava podatke iz baze
         reservationTableView.setItems(reservations);
     }
-
     private void loadAvailableRooms(java.sql.Date checkInDate, java.sql.Date checkOutDate)
     {
         if (checkInDate != null && checkOutDate != null)
         {
-
             rooms=FXCollections.observableArrayList(WrapperRoom.getAvailableRooms(checkInDate,checkOutDate));
             roomTableView.setItems(rooms);
         }

@@ -24,6 +24,7 @@ public class Reservation
         this.reservationTypeID = reservationTypeID;
         EmployeeID = employeeID;
     }
+    public Reservation() {}
 
     public Reservation(Date checkInDate, Date checkOutDate, Integer numberOfGuests, Integer guestID, Integer roomID, Integer reservationTypeID, Integer employeeID)
     {
