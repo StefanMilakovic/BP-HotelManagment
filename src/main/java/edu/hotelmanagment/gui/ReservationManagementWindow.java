@@ -1,9 +1,8 @@
 package edu.hotelmanagment.gui;
 
 import edu.hotelmanagment.model.*;
-
-
 import edu.hotelmanagment.wrapper.*;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,6 +46,7 @@ public class ReservationManagementWindow
     {
         Stage roomStage = new Stage();
         roomStage.setTitle("Reservation Management");
+        roomStage.setResizable(false);
 
         Button addReservation = new Button("Add Reservation");
         Button deleteReservation = new Button("Delete Reservation");
@@ -118,6 +118,7 @@ public class ReservationManagementWindow
     {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Add Reservation");
+        dialogStage.setResizable(false);
 
         guestTableView.getSelectionModel().clearSelection();
         roomTableView.getSelectionModel().clearSelection();
@@ -340,6 +341,7 @@ public class ReservationManagementWindow
     {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Add New Guest");
+        dialogStage.setResizable(false);
 
         Label firstNameLabel = new Label("First Name:");
         TextField firstNameField = new TextField();
@@ -370,7 +372,7 @@ public class ReservationManagementWindow
                 Guest newGuest = new Guest(null, firstName, lastName, passportNumber, email, phoneNumber);
 
                 WrapperGuest.insert(newGuest);
-                System.out.println("New guest added: " + firstName + " " + lastName);
+                //System.out.println("New guest added: " + firstName + " " + lastName);
                 dialogStage.close();
             }
             reloadGuest();
@@ -407,16 +409,14 @@ public class ReservationManagementWindow
     }
 
     private void pickDates() {
-        // Kreiranje novog Stage-a (prozora)
         Stage dateStage = new Stage();
         dateStage.setTitle("Select Dates");
+        dateStage.setResizable(false);
 
-// Labela za Check-In
         Label checkInLabel = new Label("Check-In:");
         DatePicker checkInDatePicker = new DatePicker();
         checkInDatePicker.setValue(LocalDate.now()); // Podrazumevani datum je današnji
 
-// Labela za Check-Out
         Label checkOutLabel = new Label("Check-Out:");
         DatePicker checkOutDatePicker = new DatePicker();
         checkOutDatePicker.setValue(LocalDate.now().plusDays(1)); // Podrazumevani Check-Out je sutra
@@ -472,6 +472,7 @@ public class ReservationManagementWindow
     {
         Stage editReservationStage = new Stage();
         editReservationStage.setTitle("Edit Reservation");
+        editReservationStage.setResizable(false);
         final Reservation[] r = {new Reservation()};
         final int[] reservationID = {-1};
 
@@ -488,7 +489,8 @@ public class ReservationManagementWindow
             @Override
             public void handle(ActionEvent e) {
                 try {
-                    System.out.println("Reservation ID:"+reservationIDField.getText());
+                    //
+                    // System.out.println("Reservation ID:"+reservationIDField.getText());
                     reservationID[0] =Integer.parseInt(reservationIDField.getText());
                     r[0] =WrapperReservation.selectById(reservationID[0]);
                 } catch (NumberFormatException ex) {
@@ -542,7 +544,7 @@ public class ReservationManagementWindow
         roomTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         roomTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                System.out.println("Selected Room ID: " + newValue.getRoomID());
+                //System.out.println("Selected Room ID: " + newValue.getRoomID());
                 r[0].setRoomID(newValue.getRoomID());
             }
         });
@@ -571,7 +573,7 @@ public class ReservationManagementWindow
             r[0].setCheckInDate(checkInDate);
             r[0].setCheckOutDate(checkOutDate);
             WrapperReservation.update(r[0]);
-            System.out.println(r[0]);
+            //System.out.println(r[0]);
             editReservationStage.close();
             reloadData();
         });
@@ -589,6 +591,7 @@ public class ReservationManagementWindow
     {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Delete Reservation");
+        dialogStage.setResizable(false);
 
         double textFieldWidth = 100;
 

@@ -11,9 +11,11 @@ public class Employee
     public String Email;
     public String phoneNumber;
     public java.sql.Date hireDate;
+    public Boolean isActive=true;
+    //private Integer isActive;
     public Integer PositionID;
 
-    public Employee(Integer employeeID, String firstName, String lastName, String email, String phoneNumber, Date hireDate, Integer positionID)
+    public Employee(Integer employeeID, String firstName, String lastName, String email, String phoneNumber, Date hireDate, Boolean isActive, Integer positionID)
     {
         EmployeeID = employeeID;
         FirstName = firstName;
@@ -21,6 +23,7 @@ public class Employee
         Email = email;
         this.phoneNumber = phoneNumber;
         this.hireDate = hireDate;
+        this.isActive = isActive;
         PositionID = positionID;
     }
 
@@ -94,19 +97,14 @@ public class Employee
         PositionID = positionID;
     }
 
-    @Override
-    public boolean equals(Object o)
+    public Boolean isIsActive()
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(EmployeeID, employee.EmployeeID) && Objects.equals(FirstName, employee.FirstName) && Objects.equals(LastName, employee.LastName) && Objects.equals(Email, employee.Email) && Objects.equals(phoneNumber, employee.phoneNumber) && Objects.equals(hireDate, employee.hireDate) && Objects.equals(PositionID, employee.PositionID);
+        return isActive;
     }
 
-    @Override
-    public int hashCode()
+    public void setIsActive(Boolean isActive)
     {
-        return Objects.hash(EmployeeID, FirstName, LastName, Email, phoneNumber, hireDate, PositionID);
+        this.isActive = isActive;
     }
 
     @Override
@@ -119,12 +117,8 @@ public class Employee
                 ", Email='" + Email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", hireDate=" + hireDate +
+                ", isActive=" + isActive +
                 ", PositionID=" + PositionID +
                 '}'+"\n";
-    }
-
-    public String getFirstAndLastName()
-    {
-        return FirstName + " " + LastName;
     }
 }

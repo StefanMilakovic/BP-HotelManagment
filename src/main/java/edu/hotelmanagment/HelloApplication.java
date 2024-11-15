@@ -19,6 +19,8 @@ public class HelloApplication extends Application
     public void start(Stage primaryStage) {
 
         primaryStage.getIcons().add(new Image("hotel.png"));
+        primaryStage.setTitle("Hotel Management");
+        primaryStage.setResizable(false);
         Label titleLabel = new Label("Welcome, Manager!");
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10px;"); // Stilizuj natpis
 

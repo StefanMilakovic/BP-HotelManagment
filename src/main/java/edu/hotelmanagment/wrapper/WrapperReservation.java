@@ -10,9 +10,6 @@ import java.util.List;
 
 public class WrapperReservation
 {
-    //ALTER TABLE table_name AUTO_INCREMENT = value;
-
-
     private static final String SQL_SELECT="select * from reservation";
     private static final String SQL_INSERT="insert into reservation (Check_in_date,Check_out_date,Number_of_Guests," +
             "GuestID,RoomID,ReservationTypeID,EmployeeID)values(?,?,?,?,?,?,?)";
@@ -32,7 +29,6 @@ public class WrapperReservation
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(SQL_SELECT);
             resultSet = preparedStatement.executeQuery();
-            System.out.println("cita rezervacije");
             while (resultSet.next())
                 retVal.add(new Reservation(resultSet.getInt("ReservationID"),resultSet.getDate("Check_in_date"),
                         resultSet.getDate("Check_out_date"),resultSet.getInt("Number_of_Guests"),
@@ -111,7 +107,6 @@ public class WrapperReservation
 
     public static void update(Reservation r)
     {
-        System.out.println(r);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try
