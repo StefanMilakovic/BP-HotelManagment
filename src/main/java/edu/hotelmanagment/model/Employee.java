@@ -107,6 +107,7 @@ public class Employee
         this.isActive = isActive;
     }
 
+    /*
     @Override
     public String toString()
     {
@@ -120,5 +121,12 @@ public class Employee
                 ", isActive=" + isActive +
                 ", PositionID=" + PositionID +
                 '}'+"\n";
+    }
+
+     */
+
+    public String toString()
+    {
+        return FirstName+" "+LastName;
     }
 }

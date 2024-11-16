@@ -15,7 +15,8 @@ public class WrapperRoom
     //private static final String SQL_INSERT="insert into room (Room_Number,Floor,RoomTypeID,BedTypeID)values(?,?,,?,?)";
     private static final String SQL_INSERT="{call AddNewRoom(?,?,?,?)}";
 
-    private static final String SQL_UPDATE="update room set Room_Number=?,Floor=?,RoomTypeID=?,BedTypeID=? where RoomID=?";
+    //private static final String SQL_UPDATE="update room set Room_Number=?,Floor=?,RoomTypeID=?,BedTypeID=? where RoomID=?";
+    private static final String SQL_UPDATE="{call UpdateRoom(?,?,?,?,?)}";
     private static final String SQL_DELETE="delete from room where RoomID=?";
     private static final String SQL_SELECT_BY_ID = "select * from room where RoomID=?";
     private static final String SQL_SELECT="SELECT * FROM hotel_database.room_details_view;";
@@ -148,7 +149,7 @@ public class WrapperRoom
         return retVal;
     }
 
-/*
+
     public static void update(Room r)
     {
         Connection connection = null;
@@ -158,11 +159,12 @@ public class WrapperRoom
             connection=DBUtil.getConnection();
             preparedStatement =connection.prepareStatement(SQL_UPDATE);
 
-            preparedStatement.setInt(1,r.getRoomNumber());
+            preparedStatement.setInt(1,r.getRoomID());
+
             preparedStatement.setInt(2,r.getFloor());
-            preparedStatement.setInt(3,r.getRoomTypeID());
-            preparedStatement.setInt(4,r.getBedTypeID());
-            preparedStatement.setInt(5,r.getRoomID());
+            preparedStatement.setString(3,r.getRoomType());
+            preparedStatement.setString(4, r.getBedType());
+            preparedStatement.setString(5,r.getAmenities());
 
             int rowsUpdated=preparedStatement.executeUpdate();//vraca broj azuriranih redova
 
@@ -185,7 +187,7 @@ public class WrapperRoom
             }
         }
     }
-*/
+
     public static int delete(int id)
     {
         int retVal = 0;
@@ -217,7 +219,7 @@ public class WrapperRoom
         }
         return retVal;
     }
-/*
+
     public static Room selectById(int id)
     {
         Room retVal = null;
@@ -234,8 +236,8 @@ public class WrapperRoom
             if(resultSet.next())
             {
                 retVal=new Room(resultSet.getInt("RoomID"),resultSet.getInt("Room_Number"),
-                        resultSet.getInt("Floor"), resultSet.getInt("RoomTypeID"),
-                        resultSet.getInt("BedTypeID"));
+                        resultSet.getInt("Floor"), resultSet.getString("Room_Type"),
+                        resultSet.getString("Bed_Type"),resultSet.getDouble("Price_Per_Night"),resultSet.getString("Amenities"));
             }
 
         }catch (SQLException e)
@@ -259,5 +261,4 @@ public class WrapperRoom
         return retVal;
     }
 
-     */
 }
