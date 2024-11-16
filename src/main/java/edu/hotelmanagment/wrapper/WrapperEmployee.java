@@ -17,6 +17,7 @@ public class WrapperEmployee
     private static final String SQL_SELECT_BY_ID = "select * from employee where EmployeeID=?";
     private static final String SQL_SELECT_RECEPTIONISTS="SELECT * FROM hotel_database.receptionists_employees_view;";
     private static final String SQL_SELECT_HOUSEKEEPERS="SELECT * FROM hotel_database.housekeeping_employees_view;";
+    private static final String SQL_SELECT_MANAGERS="SELECT * FROM hotel_database.manager_employees_view;";
 
     private static final String SQL_SET_ACTIVE = "UPDATE employee SET isActive = ? WHERE EmployeeID = ?";
 
@@ -112,6 +113,51 @@ public class WrapperEmployee
         {
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(SQL_SELECT_HOUSEKEEPERS);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next())
+            {
+                Employee emp = new Employee(resultSet.getInt("EmployeeID"), resultSet.getString("First_Name"),
+                        resultSet.getString("Last_Name"), resultSet.getString("Email"),
+                        resultSet.getString("Phone_Number"), resultSet.getDate("Hire_Date"),
+                        resultSet.getBoolean("isActive"), resultSet.getInt("PositionID"));
+                retVal.add(emp);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+
+        } finally
+        {
+            ConnectionPool.getInstance().checkIn(connection);
+            try
+            {
+                if (resultSet != null)
+                {
+                    resultSet.close();
+                }
+                if (preparedStatement != null)
+                {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+    public static List<Employee> selectManagers()
+    {
+        List<Employee> retVal = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT_MANAGERS);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next())
