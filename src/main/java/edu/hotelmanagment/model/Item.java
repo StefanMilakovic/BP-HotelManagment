@@ -5,14 +5,14 @@ public class Item
     public Integer itemID;
     public String name;
     public Double price;
-    public Integer itemTypeID;
+    public String itemType;
 
-    public Item(Integer itemID, String name, Double price, Integer itemTypeID)
+    public Item(Integer itemID, String name, Double price, String itemType)
     {
         this.itemID = itemID;
         this.name = name;
         this.price = price;
-        this.itemTypeID = itemTypeID;
+        this.itemType = itemType;
     }
 
     public Integer getItemID()
@@ -35,24 +35,30 @@ public class Item
         this.name = name;
     }
 
-    public Integer getItemTypeID()
+    public Double getPrice()
     {
-        return itemTypeID;
+        return price;
     }
 
-    public void setItemTypeID(Integer itemTypeID)
+    public void setPrice(Double price)
     {
-        this.itemTypeID = itemTypeID;
+        this.price = price;
+    }
+
+    public String getItemType()
+    {
+        return itemType;
+    }
+
+    public void setItemType(String itemType)
+    {
+        this.itemType = itemType;
     }
 
     @Override
     public String toString()
     {
-        return "Item{" +
-                "itemID=" + itemID +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", itemTypeID=" + itemTypeID +
-                '}'+"\n";
+        return itemID+","+name+","+price+","+itemType;
+
     }
 }

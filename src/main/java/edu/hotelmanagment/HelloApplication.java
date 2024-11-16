@@ -1,6 +1,7 @@
 package edu.hotelmanagment;
 
 import edu.hotelmanagment.gui.EmployeeManagementWindow;
+import edu.hotelmanagment.gui.ItemReservationWindow;
 import edu.hotelmanagment.gui.ReservationManagementWindow;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -27,21 +28,24 @@ public class HelloApplication extends Application
         Button btnReservations = new Button("Reservations");
         Button btnGuests = new Button("Room Management");
         Button btnEmployees = new Button("Employees");
+        Button btnItems = new Button("Add Item to Reservation");
         Button btnInvoices = new Button("Invoices");
 
         btnReservations.setMinWidth(200);
         btnGuests.setMinWidth(200);
         btnEmployees.setMinWidth(200);
+        btnItems.setMinWidth(200);
         btnInvoices.setMinWidth(200);
 
         btnReservations.setOnAction(e -> handleReservations());
         btnGuests.setOnAction(e -> handleRooms());
         btnEmployees.setOnAction(e -> handleEmployees());
+        btnItems.setOnAction(e->handleItems());
         btnInvoices.setOnAction(e -> handleInvoices());
 
         VBox vbox = new VBox(15); // Razmak između elemenata je 15px
         vbox.setStyle("-fx-alignment: center;"); // Centriraj sve unutar VBox-a
-        vbox.getChildren().addAll(titleLabel, btnReservations, btnGuests, btnEmployees, btnInvoices);
+        vbox.getChildren().addAll(titleLabel, btnReservations, btnGuests, btnEmployees,btnItems, btnInvoices);
 
 
         Scene scene = new Scene(vbox, 400, 300);
@@ -65,11 +69,15 @@ public class HelloApplication extends Application
         new EmployeeManagementWindow();
     }
 
+    private void handleItems()
+    {
+        System.out.println("Opening Items window...");
+        new ItemReservationWindow();
+    }
+
     private void handleInvoices() {
         System.out.println("Opening Invoices window...");
         // Otvori novi prozor za upravljanje fakturama
-
-
     }
 
 

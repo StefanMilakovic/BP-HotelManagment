@@ -7,6 +7,7 @@ public class ReservationHasItem
     public Integer ReservationHasItemID;
     public java.sql.Date date;
     public Integer Quantity;
+    public Double totalPrice;
     public Integer ItemID;
     public Integer ReservationID;
 
@@ -15,6 +16,7 @@ public class ReservationHasItem
         ReservationHasItemID = reservationHasItemID;
         this.date = date;
         Quantity = quantity;
+        //this.totalPrice = totalPrice;
         ItemID = itemID;
         ReservationID = reservationID;
     }
@@ -68,6 +70,19 @@ public class ReservationHasItem
     {
         ReservationID = reservationID;
     }
+
+    /*
+    public Double getTotalPrice()
+    {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice)
+    {
+        this.totalPrice = totalPrice;
+    }
+
+     */
 
     @Override
     public String toString()

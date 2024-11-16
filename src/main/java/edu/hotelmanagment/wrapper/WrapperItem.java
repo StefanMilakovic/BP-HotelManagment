@@ -7,14 +7,14 @@ import edu.hotelmanagment.util.DBUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-/*
+
 public class WrapperItem
 {
-    private static final String SQL_SELECT="select * from item";
+    private static final String SQL_SELECT="select * from item_view";
     private static final String SQL_INSERT="insert into item (Name,ItemTypeID)values(?,?)";
     private static final String SQL_UPDATE="update item set Name=?,ItemTypeID=? where ItemID=?";
     private static final String SQL_DELETE="delete from item where ItemID=?";
-    private static final String SQL_SELECT_BY_ID = "select * from item where ItemID=?";
+    private static final String SQL_SELECT_BY_ID = "select * from item_view where ItemID=?";
 
     public static List<Item> selectAll()
     {
@@ -30,7 +30,7 @@ public class WrapperItem
 
             while (resultSet.next())
                 retVal.add(new Item(resultSet.getInt("ItemID"),resultSet.getString("Name"),resultSet.getDouble("Price"),
-                        resultSet.getInt("ItemTypeID")));
+                       resultSet.getString("Item_Type")));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,6 +51,7 @@ public class WrapperItem
         return retVal;
     }
 
+    /*
     public static int insert(Item i)
     {
         int retVal = 0;
@@ -96,6 +97,8 @@ public class WrapperItem
         }
         return retVal;
     }
+
+
 
 
     public static void update(Item i)
@@ -165,6 +168,8 @@ public class WrapperItem
         return retVal;
     }
 
+     */
+
     public static Item selectById(int id)
     {
         Item retVal = null;
@@ -180,7 +185,8 @@ public class WrapperItem
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                retVal=new Item(resultSet.getInt("ItemID"),resultSet.getString("Name"),resultSet.getInt("ItemTypeID"));
+                retVal=new Item(resultSet.getInt("ItemID"),resultSet.getString("Name"),resultSet.getDouble("Price"),
+                        resultSet.getString("Item_Type"));
             }
 
         }catch (SQLException e)
@@ -205,4 +211,3 @@ public class WrapperItem
     }
 }
 
- */
