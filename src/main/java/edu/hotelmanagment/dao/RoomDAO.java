@@ -1,4 +1,4 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
 
 import edu.hotelmanagment.model.Room;
@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperRoom
+public class RoomDAO
 {
     //private static final String SQL_SELECT="select * from room";
     //private static final String SQL_INSERT="insert into room (Room_Number,Floor,RoomTypeID,BedTypeID)values(?,?,,?,?)";

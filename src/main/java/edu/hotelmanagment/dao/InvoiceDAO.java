@@ -1,4 +1,4 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
 import edu.hotelmanagment.model.Invoice;
 import edu.hotelmanagment.util.ConnectionPool;
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperInvoice
+public class InvoiceDAO
 {
     private static final String SQL_SELECT="select * from invoice";
     private static final String SQL_INSERT="insert into invoice (Total_Amount,Issued_date,GuestID,ReservationID,PaymentTypeID)values(?,?,?,?,?)";

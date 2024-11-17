@@ -1,4 +1,4 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
 import edu.hotelmanagment.model.Event;
 import edu.hotelmanagment.util.ConnectionPool;
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperEvent
+public class EventDAO
 {
     private static final String SQL_SELECT="select * from event";
     private static final String SQL_INSERT="insert into event (Name,Date,Location,Description,EmployeeID)values(?,?,?,?,?)";

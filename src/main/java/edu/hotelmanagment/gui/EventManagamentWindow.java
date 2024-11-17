@@ -4,7 +4,7 @@ import edu.hotelmanagment.model.Employee;
 import edu.hotelmanagment.model.Event;
 import edu.hotelmanagment.model.EventHasGuest;
 import edu.hotelmanagment.model.Guest;
-import edu.hotelmanagment.wrapper.*;
+import edu.hotelmanagment.dao.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -75,7 +75,7 @@ public class EventManagamentWindow
                 locationColumn, descriptionColumn,employeeIDColumn
         );
 
-        events = FXCollections.observableArrayList(WrapperEvent.selectAll());
+        events = FXCollections.observableArrayList(EventDAO.selectAll());
         eventTableView.setItems(events);
 
 
@@ -138,7 +138,7 @@ public class EventManagamentWindow
             employeeComboBox.getItems().clear();
             employeeIDs.clear();
 
-            List<Employee> employees = WrapperEmployee.selectManagers(); // Metoda za selekciju menadžera
+            List<Employee> employees = EmployeeDAO.selectManagers(); // Metoda za selekciju menadžera
             for (Employee emp : employees) {
                 employeeComboBox.getItems().add(emp.getFirstName() + " " + emp.getLastName());
                 employeeIDs.add(emp.getEmployeeID());
@@ -168,7 +168,7 @@ public class EventManagamentWindow
                 System.out.println("Invalid Input, Please fill in all required fields.");
             } else {
                 Event newEvent = new Event(null, name, eventDate, location, description, employeeID);
-                WrapperEvent.insert(newEvent);
+                EventDAO.insert(newEvent);
                 reloadData();
                 newEventStage.close();
             }
@@ -224,7 +224,7 @@ public class EventManagamentWindow
                 System.out.println("Please enter a Room ID.");
             } else {
                 int eventId = Integer.parseInt(eventIdText);
-                WrapperEvent.delete(eventId);
+                EventDAO.delete(eventId);
                 reloadData();
                 deleteEvent.close();
             }});
@@ -260,7 +260,7 @@ public class EventManagamentWindow
         eventComboBox.setPrefWidth(200);
         List<Integer> eventIDs = new ArrayList<>();
 
-        List<Event> events = WrapperEvent.selectAll();
+        List<Event> events = EventDAO.selectAll();
         for (Event event : events) {
             eventComboBox.getItems().add("Event ID " + event.getEventID() + ": " + event.getName());
             eventIDs.add(event.getEventID());
@@ -294,7 +294,7 @@ public class EventManagamentWindow
                 passportNumberColumn, emailColumn, phoneNumberColumn
         );
 
-        guests = FXCollections.observableArrayList(WrapperGuest.selectAll());
+        guests = FXCollections.observableArrayList(GuestDAO.selectAll());
         guestTableView.setItems(guests);
 
         guestTableView.setFixedCellSize(25);
@@ -328,7 +328,7 @@ public class EventManagamentWindow
             if (!selectedGuests.isEmpty()) {
                 for (Guest guest : selectedGuests) {
                     EventHasGuest eg=new EventHasGuest(selectedEventID, guest.getGuestID());
-                    WrapperEventHasGuest.insert(eg);
+                    EventHasGuestDAO.insert(eg);
                 }
             }
             dialogStage.close();
@@ -351,7 +351,7 @@ public class EventManagamentWindow
     private void reloadData()
     {
         events.clear();
-        events = FXCollections.observableArrayList(WrapperEvent.selectAll());
+        events = FXCollections.observableArrayList(EventDAO.selectAll());
         eventTableView.setItems(events);
     }
 
@@ -384,7 +384,7 @@ public class EventManagamentWindow
                 passportNumberColumn, emailColumn, phoneNumberColumn
         );
 
-        ObservableList<Guest> guests = FXCollections.observableArrayList(WrapperGuest.selectByEventID(eventID));
+        ObservableList<Guest> guests = FXCollections.observableArrayList(GuestDAO.selectByEventID(eventID));
         guestTableView.setItems(guests);
 
         VBox layout = new VBox(10, guestTableView);

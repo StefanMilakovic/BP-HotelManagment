@@ -1,7 +1,6 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
-import edu.hotelmanagment.model.Guest;
-
+import edu.hotelmanagment.model.RoomHousekeeping;
 import edu.hotelmanagment.util.ConnectionPool;
 import edu.hotelmanagment.util.DBUtil;
 
@@ -9,18 +8,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperGuest
+public class RoomHousekeepingDAO
 {
-    private static final String SQL_SELECT="select * from guest";
-    private static final String SQL_INSERT="insert into guest (First_Name,Last_Name,Passport_Number,Email,Phone_Number)values(?,?,?,?,?)";
-    private static final String SQL_UPDATE="update guest set First_Name=?,Last_Name=?,Passport_Number=?,Email=?,Phone_Number=? where GuestID=?";
-    private static final String SQL_DELETE="delete from guest where GuestID=?";
-    private static final String SQL_SELECT_BY_ID = "select * from guest where GuestID=?";
-    private static final String SQL_SELECT_BY_EVENT="SELECT * FROM hotel_database.select_guests_by_eventid WHERE EventID=?";
+    private static final String SQL_SELECT="select * from room_housekeeping";
+    private static final String SQL_INSERT="insert into room_housekeeping (Date,RoomID,EmployeeID)values(?,?,?)";
+    private static final String SQL_UPDATE="update room_housekeeping set Date=?,RoomID=?,EmployeeID=? where RoomHousekeepingID=?";
+    private static final String SQL_DELETE="delete from room_housekeeping where RoomHousekeepingID=?";
+    private static final String SQL_SELECT_BY_ID = "select * from room_housekeeping where RoomHousekeepingID=?";
 
-    public static List<Guest> selectAll()
+    public static List<RoomHousekeeping> selectAll()
     {
-        List<Guest> retVal = new ArrayList<>();
+        List<RoomHousekeeping> retVal = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -31,9 +29,9 @@ public class WrapperGuest
 
 
             while (resultSet.next())
-                retVal.add(new Guest(resultSet.getInt("GuestID"),resultSet.getString("First_Name"),
-                        resultSet.getString("Last_Name"),resultSet.getString("Passport_Number"),
-                        resultSet.getString("Email"),resultSet.getString("Phone_Number")));
+                retVal.add(new RoomHousekeeping(resultSet.getInt("RoomHousekeepingID"),
+                        resultSet.getDate("Date"),resultSet.getInt("RoomID"),
+                        resultSet.getInt("EmployeeID")));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,7 +52,7 @@ public class WrapperGuest
         return retVal;
     }
 
-    public static int insert(Guest g)
+    public static int insert(RoomHousekeeping rh)
     {
         int retVal = 0;
         Connection connection = null;
@@ -65,11 +63,9 @@ public class WrapperGuest
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 
-            preparedStatement.setString(1,g.getFirstName());
-            preparedStatement.setString(2,g.getLastName());
-            preparedStatement.setString(3,g.getPassportNumber());
-            preparedStatement.setString(4,g.getEmail());
-            preparedStatement.setString(5,g.getPhoneNumber());
+            preparedStatement.setDate(1, rh.getDate());
+            preparedStatement.setInt(2, rh.getRoomID());
+            preparedStatement.setInt(3, rh.getEmployeeID());
 
             retVal = preparedStatement.executeUpdate();
 
@@ -79,9 +75,7 @@ public class WrapperGuest
                 resultSet = preparedStatement.getGeneratedKeys();
                 if(resultSet.next())
                 {
-                    //System.out.println(resultSet.getInt(1));
-                    g.setGuestID(resultSet.getInt(1));
-                    System.out.println(g.getGuestID());
+                    rh.setRoomHousekeepingID(resultSet.getInt(1));
                 }
             }
 
@@ -106,7 +100,7 @@ public class WrapperGuest
     }
 
 
-    public static void update(Guest g)
+    public static void update(RoomHousekeeping rh)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -115,12 +109,10 @@ public class WrapperGuest
             connection=DBUtil.getConnection();
             preparedStatement =connection.prepareStatement(SQL_UPDATE);
 
-            preparedStatement.setString(1,g.getFirstName());
-            preparedStatement.setString(2,g.getLastName());
-            preparedStatement.setString(3,g.getPassportNumber());
-            preparedStatement.setString(4,g.getEmail());
-            preparedStatement.setString(5,g.getPhoneNumber());
-            preparedStatement.setInt(6,g.getGuestID());
+            preparedStatement.setDate(1, rh.getDate());
+            preparedStatement.setInt(2, rh.getRoomID());
+            preparedStatement.setInt(3, rh.getEmployeeID());
+            preparedStatement.setInt(4, rh.getRoomHousekeepingID());
 
             int rowsUpdated=preparedStatement.executeUpdate();//vraca broj azuriranih redova
 
@@ -176,9 +168,9 @@ public class WrapperGuest
         return retVal;
     }
 
-    public static Guest selectById(int id)
+    public static RoomHousekeeping selectById(int id)
     {
-        Guest retVal = null;
+        RoomHousekeeping retVal = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -191,9 +183,9 @@ public class WrapperGuest
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                retVal=new Guest(resultSet.getInt("GuestID"),resultSet.getString("First_Name"),
-                        resultSet.getString("Last_Name"),resultSet.getString("Passport_Number"),
-                        resultSet.getString("Email"),resultSet.getString("Phone_Number"));
+                retVal=new RoomHousekeeping(resultSet.getInt("RoomHousekeepingID"),
+                        resultSet.getDate("Date"),resultSet.getInt("RoomID"),
+                        resultSet.getInt("EmployeeID"));
             }
 
         }catch (SQLException e)
@@ -211,52 +203,6 @@ public class WrapperGuest
                     preparedStatement.close();
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return retVal;
-    }
-
-
-    public static List<Guest> selectByEventID(int eventID)
-    {
-        List<Guest> retVal = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try
-        {
-            connection = DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(SQL_SELECT_BY_EVENT);
-            preparedStatement.setInt(1, eventID);
-
-            resultSet = preparedStatement.executeQuery();
-
-
-            while (resultSet.next())
-                retVal.add(new Guest(resultSet.getInt("GuestID"),resultSet.getString("First_Name"),
-                        resultSet.getString("Last_Name"),resultSet.getString("Passport_Number"),
-                        resultSet.getString("Email"),resultSet.getString("Phone_Number")));
-
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-
-        } finally
-        {
-            ConnectionPool.getInstance().checkIn(connection);
-            try
-            {
-                if (resultSet != null)
-                {
-                    resultSet.close();
-                }
-                if (preparedStatement != null)
-                {
-                    preparedStatement.close();
-                }
-            } catch (SQLException ex)
-            {
                 ex.printStackTrace();
             }
         }

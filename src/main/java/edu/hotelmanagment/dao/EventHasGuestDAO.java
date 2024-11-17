@@ -1,7 +1,6 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
-import edu.hotelmanagment.model.Guest;
-import edu.hotelmanagment.model.ReservationHasGuest;
+import edu.hotelmanagment.model.EventHasGuest;
 import edu.hotelmanagment.util.ConnectionPool;
 import edu.hotelmanagment.util.DBUtil;
 
@@ -9,63 +8,29 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperReservationHasGuest
+public class EventHasGuestDAO
 {
-    public static final String SQL_INSERT="insert into reservation_has_guest(ReservationID,GuestID) values(?,?)";
-    private static final String SQL_SELECT_ALL_GUESTS_ON_RESERVATION="select * from all_guests_on_reservation where ReservationID=?";
+    ;
+    private static final String SQL_SELECT="select * from event_has_guest";
+    private static final String SQL_INSERT="insert into event_has_guest (EventID,GuestID)values(?,?)";
 
-    public static int insert(ReservationHasGuest rg)
+
+
+
+    public static List<EventHasGuest> selectAll()
     {
-        int retVal = 0;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(SQL_INSERT);
-
-            preparedStatement.setInt(1, rg.getReservationID());
-            preparedStatement.setInt(2, rg.getGuestID());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.getInstance().checkIn(connection);
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return retVal;
-    }
-
-
-    public static List<Guest> selectAllFromReservation(Integer reservationID)
-    {
-        List<Guest> retVal = new ArrayList<>();
+        List<EventHasGuest> retVal = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_GUESTS_ON_RESERVATION);
-            preparedStatement.setInt(1, reservationID);
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
             resultSet = preparedStatement.executeQuery();
 
+
             while (resultSet.next())
-                retVal.add(new Guest(resultSet.getInt("GuestID"),resultSet.getString("First_Name"),
-                        resultSet.getString("Last_Name"),resultSet.getString("Passport_Number"),
-                        resultSet.getString("Email"),resultSet.getString("Phone_Number")));
+                retVal.add(new EventHasGuest(resultSet.getInt("EventID"),resultSet.getInt("GuestID")));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,6 +44,42 @@ public class WrapperReservationHasGuest
                 if (preparedStatement != null) {
                     preparedStatement.close();
                 }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+    public static int insert(EventHasGuest eg)
+    {
+        int retVal = 0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_INSERT);
+
+            preparedStatement.setInt(1,eg.getEventID());
+            preparedStatement.setInt(2,eg.getGuestID());
+
+            retVal = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            ConnectionPool.getInstance().checkIn(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

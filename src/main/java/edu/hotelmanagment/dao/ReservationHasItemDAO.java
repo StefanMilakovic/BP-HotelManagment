@@ -1,15 +1,12 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
-import edu.hotelmanagment.model.Item;
 import edu.hotelmanagment.model.ReservationHasItem;
 import edu.hotelmanagment.util.ConnectionPool;
 import edu.hotelmanagment.util.DBUtil;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public class WrapperReservationHasItem
+public class ReservationHasItemDAO
 {
     public static final String SQL_INSERT="insert into reservation_has_item(Date,Quantity,ItemID,ReservationID) values(?,?,?,?)";
 

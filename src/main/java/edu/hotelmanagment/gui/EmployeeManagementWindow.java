@@ -1,7 +1,7 @@
 package edu.hotelmanagment.gui;
 
 import edu.hotelmanagment.model.Employee;
-import edu.hotelmanagment.wrapper.WrapperEmployee;
+import edu.hotelmanagment.dao.EmployeeDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -73,7 +73,7 @@ public class EmployeeManagementWindow
                 emailColumn, phoneNumberColumn, hireDateColumn,isActiveColumn,positionIDColumn
         );
 
-        employees = FXCollections.observableArrayList(WrapperEmployee.selectAll());
+        employees = FXCollections.observableArrayList(EmployeeDAO.selectAll());
         employeeTableView.setItems(employees);
 
 
@@ -104,7 +104,7 @@ public class EmployeeManagementWindow
                     } else {
                         row.setStyle("-fx-background-color: lightcoral;");
                     }
-                    WrapperEmployee.updateEmployeeStatus(employee);
+                    EmployeeDAO.updateEmployeeStatus(employee);
                 }
                 reloadData();
             });
@@ -192,7 +192,7 @@ public class EmployeeManagementWindow
                     System.out.println("Error, Please fill in all fields.");
                 } else {
                     Employee newEmployee = new Employee(null,firstName, lastName, email, phoneNumber, hireDate,true,choise);
-                    WrapperEmployee.insert(newEmployee);
+                    EmployeeDAO.insert(newEmployee);
                     reloadData();
                     employeeStage.close();
                     System.out.println("New Employee Added:");
@@ -265,7 +265,7 @@ public class EmployeeManagementWindow
                 System.out.println("Invalid Employee ID");
                 return;
             }
-            Employee employee = WrapperEmployee.selectById(employeeID);
+            Employee employee = EmployeeDAO.selectById(employeeID);
             if (employee != null) {
                 txtFirstName.setText(employee.getFirstName());
                 txtLastName.setText(employee.getLastName());
@@ -307,7 +307,7 @@ public class EmployeeManagementWindow
                 int employeeID = Integer.parseInt(txtEmployeeID.getText());
                 Employee updatedEmployee = new Employee(employeeID, firstName, lastName, email, phoneNumber, hireDate, true, positionID);
 
-                WrapperEmployee.update(updatedEmployee);
+                EmployeeDAO.update(updatedEmployee);
                 reloadData();
                 employeeStage.close();
                 System.out.println("Employee Updated:");
@@ -337,7 +337,7 @@ public class EmployeeManagementWindow
                 System.out.println("Please enter a Employee ID.");
             } else {
                 int employeeId = Integer.parseInt(roomIdText);
-                WrapperEmployee.delete(employeeId);
+                EmployeeDAO.delete(employeeId);
                 reloadData();
                 deleteStage.close();
             }});
@@ -365,7 +365,7 @@ public class EmployeeManagementWindow
     private void reloadData()
     {
         employees.clear();
-        employees = FXCollections.observableArrayList(WrapperEmployee.selectAll());
+        employees = FXCollections.observableArrayList(EmployeeDAO.selectAll());
         employeeTableView.setItems(employees);
     }
 

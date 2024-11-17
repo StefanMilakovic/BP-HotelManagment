@@ -1,6 +1,7 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
-import edu.hotelmanagment.model.EventHasGuest;
+import edu.hotelmanagment.model.Guest;
+import edu.hotelmanagment.model.ReservationHasGuest;
 import edu.hotelmanagment.util.ConnectionPool;
 import edu.hotelmanagment.util.DBUtil;
 
@@ -8,50 +9,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperEventHasGuest
+public class ReservationHasGuestDAO
 {
-    ;
-    private static final String SQL_SELECT="select * from event_has_guest";
-    private static final String SQL_INSERT="insert into event_has_guest (EventID,GuestID)values(?,?)";
+    public static final String SQL_INSERT="insert into reservation_has_guest(ReservationID,GuestID) values(?,?)";
+    private static final String SQL_SELECT_ALL_GUESTS_ON_RESERVATION="select * from all_guests_on_reservation where ReservationID=?";
 
-
-
-
-    public static List<EventHasGuest> selectAll()
-    {
-        List<EventHasGuest> retVal = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(SQL_SELECT);
-            resultSet = preparedStatement.executeQuery();
-
-
-            while (resultSet.next())
-                retVal.add(new EventHasGuest(resultSet.getInt("EventID"),resultSet.getInt("GuestID")));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        } finally {
-            ConnectionPool.getInstance().checkIn(connection);
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return retVal;
-    }
-
-    public static int insert(EventHasGuest eg)
+    public static int insert(ReservationHasGuest rg)
     {
         int retVal = 0;
         Connection connection = null;
@@ -62,11 +25,10 @@ public class WrapperEventHasGuest
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT);
 
-            preparedStatement.setInt(1,eg.getEventID());
-            preparedStatement.setInt(2,eg.getGuestID());
+            preparedStatement.setInt(1, rg.getReservationID());
+            preparedStatement.setInt(2, rg.getGuestID());
 
-            retVal = preparedStatement.executeUpdate();
-
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,6 +42,43 @@ public class WrapperEventHasGuest
                     preparedStatement.close();
                 }
 
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+
+    public static List<Guest> selectAllFromReservation(Integer reservationID)
+    {
+        List<Guest> retVal = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_GUESTS_ON_RESERVATION);
+            preparedStatement.setInt(1, reservationID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next())
+                retVal.add(new Guest(resultSet.getInt("GuestID"),resultSet.getString("First_Name"),
+                        resultSet.getString("Last_Name"),resultSet.getString("Passport_Number"),
+                        resultSet.getString("Email"),resultSet.getString("Phone_Number")));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        } finally {
+            ConnectionPool.getInstance().checkIn(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

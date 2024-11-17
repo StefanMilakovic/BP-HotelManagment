@@ -1,4 +1,4 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
 import edu.hotelmanagment.model.Employee;
 import edu.hotelmanagment.util.ConnectionPool;
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperEmployee
+public class EmployeeDAO
 {
     private static final String SQL_SELECT="select * from employee";
     private static final String SQL_INSERT="insert into employee (First_Name,Last_Name,Email,Phone_Number,Hire_Date,isActive,PositionID)values(?,?,?,?,?,?,?)";

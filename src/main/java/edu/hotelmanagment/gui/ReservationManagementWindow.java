@@ -1,7 +1,7 @@
 package edu.hotelmanagment.gui;
 
 import edu.hotelmanagment.model.*;
-import edu.hotelmanagment.wrapper.*;
+import edu.hotelmanagment.dao.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,10 +41,7 @@ public class ReservationManagementWindow
     AtomicInteger reservationTypeID = new AtomicInteger();
     AtomicInteger employeeID = new AtomicInteger();
 
-
-
     int tempGuestID;
-
 
     public ReservationManagementWindow()
     {
@@ -95,7 +92,7 @@ public class ReservationManagementWindow
                 reservationTypeIDColumn, employeeIDColumn
         );
 
-        reservations = FXCollections.observableArrayList(WrapperReservation.selectAll());
+        reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());
         reservationTableView.setItems(reservations);
 
         reservationTableView.setOnMouseClicked(event ->
@@ -167,7 +164,7 @@ public class ReservationManagementWindow
                 passportNumberColumn, emailColumn, phoneNumberColumn
         );
 
-        guests = FXCollections.observableArrayList(WrapperGuest.selectAll());
+        guests = FXCollections.observableArrayList(GuestDAO.selectAll());
         guestTableView.setItems(guests);
 
         guestTableView.setFixedCellSize(25);
@@ -313,7 +310,7 @@ public class ReservationManagementWindow
             employeeComboBox.getItems().clear();
             employeeIDs.clear();
 
-            List<Employee> receptionists = WrapperEmployee.selectReceptionists();
+            List<Employee> receptionists = EmployeeDAO.selectReceptionists();
             for (Employee emp : receptionists)
             {
                 employeeComboBox.getItems().add(emp.getFirstName() + " " + emp.getLastName());
@@ -345,7 +342,7 @@ public class ReservationManagementWindow
 
         addReservationButton.setOnAction(e ->
         {
-            WrapperReservation.insert(new Reservation(checkInDate, checkOutDate, numberOfGuests.get(), guestID.get(), roomID, reservationTypeID.get(), employeeID.get()));
+            ReservationDAO.insert(new Reservation(checkInDate, checkOutDate, numberOfGuests.get(), guestID.get(), roomID, reservationTypeID.get(), employeeID.get()));
             dialogStage.close();
             reloadData();
         });
@@ -399,7 +396,7 @@ public class ReservationManagementWindow
             {
                 Guest newGuest = new Guest(null, firstName, lastName, passportNumber, email, phoneNumber);
 
-                WrapperGuest.insert(newGuest);
+                GuestDAO.insert(newGuest);
                 dialogStage.close();
                 tempGuestID=newGuest.getGuestID();
             }
@@ -528,7 +525,7 @@ public class ReservationManagementWindow
                     //
                     // System.out.println("Reservation ID:"+reservationIDField.getText());
                     reservationID[0] = Integer.parseInt(reservationIDField.getText());
-                    r[0] = WrapperReservation.selectById(reservationID[0]);
+                    r[0] = ReservationDAO.selectById(reservationID[0]);
                 } catch (NumberFormatException ex)
                 {
                     System.out.println("Invalid reservation ID entered!");
@@ -617,7 +614,7 @@ public class ReservationManagementWindow
         {
             r[0].setCheckInDate(checkInDate);
             r[0].setCheckOutDate(checkOutDate);
-            WrapperReservation.update(r[0]);
+            ReservationDAO.update(r[0]);
             //System.out.println(r[0]);
             editReservationStage.close();
             reloadData();
@@ -654,7 +651,7 @@ public class ReservationManagementWindow
             } else
             {
                 int reservationId = Integer.parseInt(roomIdText);
-                WrapperReservation.delete(reservationId);
+                ReservationDAO.delete(reservationId);
                 reloadData();
                 dialogStage.close();
             }
@@ -683,7 +680,7 @@ public class ReservationManagementWindow
     private void reloadGuest()
     {
         guests.clear();
-        guests = FXCollections.observableArrayList(WrapperGuest.selectAll());  // Metoda koja učitava podatke iz baze
+        guests = FXCollections.observableArrayList(GuestDAO.selectAll());  // Metoda koja učitava podatke iz baze
         guestTableView.setItems(guests);
 
     }
@@ -691,7 +688,7 @@ public class ReservationManagementWindow
     private void reloadData()
     {
         reservations.clear();
-        reservations = FXCollections.observableArrayList(WrapperReservation.selectAll());  // Metoda koja učitava podatke iz baze
+        reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());  // Metoda koja učitava podatke iz baze
         reservationTableView.setItems(reservations);
     }
 
@@ -699,7 +696,7 @@ public class ReservationManagementWindow
     {
         if (checkInDate != null && checkOutDate != null)
         {
-            rooms = FXCollections.observableArrayList(WrapperRoom.getAvailableRooms(checkInDate, checkOutDate));
+            rooms = FXCollections.observableArrayList(RoomDAO.getAvailableRooms(checkInDate, checkOutDate));
             roomTableView.setItems(rooms);
         }
     }
@@ -735,7 +732,7 @@ public class ReservationManagementWindow
                 passportNumberColumn, emailColumn, phoneNumberColumn
         );
 
-        guests = FXCollections.observableArrayList(WrapperReservationHasGuest.selectAllFromReservation(reservationID));
+        guests = FXCollections.observableArrayList(ReservationHasGuestDAO.selectAllFromReservation(reservationID));
         guestTableView.setItems(guests);
 
         Button checkInButton = new Button("Check In Other Guests");
@@ -743,9 +740,9 @@ public class ReservationManagementWindow
         {
             addNewGuest();
             ReservationHasGuest hg=new ReservationHasGuest(reservationID,tempGuestID);
-            WrapperReservationHasGuest.insert(hg);
+            ReservationHasGuestDAO.insert(hg);
             guests.clear();
-            guests = FXCollections.observableArrayList(WrapperReservationHasGuest.selectAllFromReservation(reservationID));
+            guests = FXCollections.observableArrayList(ReservationHasGuestDAO.selectAllFromReservation(reservationID));
             guestTableView.setItems(guests);
         });
 

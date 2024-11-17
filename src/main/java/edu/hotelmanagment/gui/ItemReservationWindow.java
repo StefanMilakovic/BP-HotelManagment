@@ -3,9 +3,9 @@ package edu.hotelmanagment.gui;
 import edu.hotelmanagment.model.Item;
 import edu.hotelmanagment.model.Reservation;
 import edu.hotelmanagment.model.ReservationHasItem;
-import edu.hotelmanagment.wrapper.WrapperItem;
-import edu.hotelmanagment.wrapper.WrapperReservation;
-import edu.hotelmanagment.wrapper.WrapperReservationHasItem;
+import edu.hotelmanagment.dao.ItemDAO;
+import edu.hotelmanagment.dao.ReservationDAO;
+import edu.hotelmanagment.dao.ReservationHasItemDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -53,7 +53,7 @@ public class ItemReservationWindow
                 itemIDColumn, nameColumn, priceColumn, itemTypeColumn
         );
 
-        ObservableList<Item> items = FXCollections.observableArrayList(WrapperItem.selectAll());
+        ObservableList<Item> items = FXCollections.observableArrayList(ItemDAO.selectAll());
         itemTableView.setItems(items);
 
         itemTableView.setOnMouseClicked(event -> {
@@ -115,7 +115,7 @@ public class ItemReservationWindow
                 reservationTypeIDColumn, employeeIDColumn
         );
 
-        ObservableList<Reservation> reservations = FXCollections.observableArrayList(WrapperReservation.selectAll());
+        ObservableList<Reservation> reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());
         reservationTableView.setItems(reservations);
 
         reservationTableView.setOnMouseClicked(event -> {
@@ -148,7 +148,7 @@ public class ItemReservationWindow
                 itemID=selectedItem.getItemID();
                 System.out.println("Adding " + quantity + " of Item: " + selectedItem.getName());
                 ReservationHasItem ri=new ReservationHasItem(null, Date.valueOf(LocalDate.now()),quantity,itemID,reservationID);
-                WrapperReservationHasItem.insert(ri);
+                ReservationHasItemDAO.insert(ri);
             } else {
                 System.out.println("No item selected or invalid quantity!");
             }

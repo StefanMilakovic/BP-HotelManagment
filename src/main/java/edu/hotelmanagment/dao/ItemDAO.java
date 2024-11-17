@@ -1,4 +1,4 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
 import edu.hotelmanagment.model.Item;
 import edu.hotelmanagment.util.ConnectionPool;
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperItem
+public class ItemDAO
 {
     private static final String SQL_SELECT="select * from item_view";
     private static final String SQL_INSERT="insert into item (Name,ItemTypeID)values(?,?)";

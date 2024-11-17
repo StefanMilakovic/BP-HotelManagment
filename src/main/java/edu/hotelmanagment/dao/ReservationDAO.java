@@ -1,4 +1,4 @@
-package edu.hotelmanagment.wrapper;
+package edu.hotelmanagment.dao;
 
 import edu.hotelmanagment.model.Reservation;
 import edu.hotelmanagment.util.ConnectionPool;
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperReservation
+public class ReservationDAO
 {
     private static final String SQL_SELECT="select * from reservation";
     private static final String SQL_INSERT="insert into reservation (Check_in_date,Check_out_date,Number_of_Guests," +

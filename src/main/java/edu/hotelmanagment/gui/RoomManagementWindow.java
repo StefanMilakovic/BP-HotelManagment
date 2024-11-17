@@ -4,9 +4,9 @@ package edu.hotelmanagment.gui;
 import edu.hotelmanagment.model.Employee;
 import edu.hotelmanagment.model.Room;
 import edu.hotelmanagment.model.RoomHousekeeping;
-import edu.hotelmanagment.wrapper.WrapperEmployee;
-import edu.hotelmanagment.wrapper.WrapperRoom;
-import edu.hotelmanagment.wrapper.WrapperRoomHousekeeping;
+import edu.hotelmanagment.dao.EmployeeDAO;
+import edu.hotelmanagment.dao.RoomDAO;
+import edu.hotelmanagment.dao.RoomHousekeepingDAO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -79,7 +78,7 @@ public class RoomManagementWindow {
 
         tableView.getColumns().addAll(roomIDColumn, roomNumberColumn, floorColumn, roomTypeColumn, bedTypeColumn,priceColumn,amenitiesColumn);
 
-        rooms=FXCollections.observableArrayList(WrapperRoom.selectAll());
+        rooms=FXCollections.observableArrayList(RoomDAO.selectAll());
         tableView.setItems(rooms);
 
         tableView.setFixedCellSize(25);
@@ -105,7 +104,7 @@ public class RoomManagementWindow {
         housekeepingTableView = new TableView<>();
         housekeepingTableView.getColumns().addAll(roomHousekeepingIDColumn, dateColumn, roomIDHousekeepingColumn, employeeIDColumn);
 
-        housekeepingData = FXCollections.observableArrayList(WrapperRoomHousekeeping.selectAll());
+        housekeepingData = FXCollections.observableArrayList(RoomHousekeepingDAO.selectAll());
         housekeepingTableView.setItems(housekeepingData);
 
         housekeepingTableView.setFixedCellSize(25);
@@ -163,7 +162,7 @@ public class RoomManagementWindow {
             System.out.println("Invalid Input, Please fill in all fields.");
         } else {
             Room newRoom=new Room(null,null,Integer.parseInt(floor),roomType,bedType,null,amenities);
-            WrapperRoom.insert(newRoom);
+            RoomDAO.insert(newRoom);
             reloadData();
             dialogStage.close();
         }
@@ -213,7 +212,7 @@ public class RoomManagementWindow {
                 System.out.println("Please enter a Room ID.");
             } else {
                 int roomId = Integer.parseInt(roomIdText);
-                WrapperRoom.delete(roomId);
+                RoomDAO.delete(roomId);
                 reloadData();
                 dialogStage.close();
             }});
@@ -308,7 +307,7 @@ public class RoomManagementWindow {
                 int roomId = Integer.parseInt(roomIdTextField.getText());
                 int floorValue = Integer.parseInt(floor);
                 Room updatedRoom = new Room(roomId, null, floorValue, roomType, bedType, null, amenities);
-                WrapperRoom.update(updatedRoom);
+                RoomDAO.update(updatedRoom);
                 reloadData();
                 dialogStage.close();
                 System.out.println("Room Updated:");
@@ -324,13 +323,13 @@ public class RoomManagementWindow {
 
     private void reloadData() {
         rooms.clear();
-        rooms=FXCollections.observableArrayList(WrapperRoom.selectAll());  // Metoda koja učitava podatke iz baze
+        rooms=FXCollections.observableArrayList(RoomDAO.selectAll());  // Metoda koja učitava podatke iz baze
         tableView.setItems(rooms);
     }
     private void reloadHousekeepingTable()
     {
         housekeepingData.clear();
-        housekeepingData = FXCollections.observableArrayList(WrapperRoomHousekeeping.selectAll());
+        housekeepingData = FXCollections.observableArrayList(RoomHousekeepingDAO.selectAll());
         housekeepingTableView.setItems(housekeepingData);
     }
 
@@ -364,7 +363,7 @@ public class RoomManagementWindow {
         workerComboBox.setPromptText("Select Employee");
         workerComboBox.setPrefWidth(150);
 
-        List<Employee> employees = WrapperEmployee.selectHousekeepers();
+        List<Employee> employees = EmployeeDAO.selectHousekeepers();
         for (Employee employee : employees) {
             workerComboBox.getItems().add(employee);
         }
@@ -381,7 +380,7 @@ public class RoomManagementWindow {
             }
 
             RoomHousekeeping rh=new RoomHousekeeping(null,java.sql.Date.valueOf(date),Integer.parseInt(roomId),selectedWorker.getEmployeeID());
-            WrapperRoomHousekeeping.insert(rh);
+            RoomHousekeepingDAO.insert(rh);
 
             housekeepingStage.close();
         });
