@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WrapperReservationHasGuest
 {
-    public static final String SQL_INSERT="insert into reservation_has_guest(ReservationID,GuestID) values(?,?,?,?)";
+    public static final String SQL_INSERT="insert into reservation_has_guest(ReservationID,GuestID) values(?,?)";
     private static final String SQL_SELECT_ALL_GUESTS_ON_RESERVATION="select * from all_guests_on_reservation where ReservationID=?";
 
     public static int insert(ReservationHasGuest rg)
