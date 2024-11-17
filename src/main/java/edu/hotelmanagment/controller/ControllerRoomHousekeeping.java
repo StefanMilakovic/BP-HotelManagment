@@ -1,5 +1,6 @@
 package edu.hotelmanagment.controller;
 
+/*
 import edu.hotelmanagment.model.RoomHousekeeping;
 import edu.hotelmanagment.wrapper.WrapperRoomHousekeeping;
 
@@ -32,3 +33,5 @@ public class ControllerRoomHousekeeping
         return WrapperRoomHousekeeping.selectById(id);
     };
 }
+
+ */

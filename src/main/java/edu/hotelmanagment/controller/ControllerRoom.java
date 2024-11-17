@@ -1,6 +1,6 @@
 package edu.hotelmanagment.controller;
 
-
+/*
 import edu.hotelmanagment.model.Room;
 import edu.hotelmanagment.wrapper.WrapperRoom;
 
@@ -18,7 +18,7 @@ public class ControllerRoom {
     {
         WrapperRoom.insert(r);
     };
-/*
+
     public void update(Room r)
     {
         WrapperRoom.update(r);
@@ -34,5 +34,8 @@ public class ControllerRoom {
         return WrapperRoom.selectById(id);
     };
 
-     */
+
 }
+
+ */
+

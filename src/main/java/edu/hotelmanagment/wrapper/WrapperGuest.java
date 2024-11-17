@@ -16,6 +16,7 @@ public class WrapperGuest
     private static final String SQL_UPDATE="update guest set First_Name=?,Last_Name=?,Passport_Number=?,Email=?,Phone_Number=? where GuestID=?";
     private static final String SQL_DELETE="delete from guest where GuestID=?";
     private static final String SQL_SELECT_BY_ID = "select * from guest where GuestID=?";
+    private static final String SQL_SELECT_BY_EVENT="SELECT * FROM hotel_database.select_guests_by_eventid WHERE EventID=?";
 
     public static List<Guest> selectAll()
     {
@@ -210,6 +211,52 @@ public class WrapperGuest
                     preparedStatement.close();
                 }
             } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+
+    public static List<Guest> selectByEventID(int eventID)
+    {
+        List<Guest> retVal = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT_BY_EVENT);
+            preparedStatement.setInt(1, eventID);
+
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next())
+                retVal.add(new Guest(resultSet.getInt("GuestID"),resultSet.getString("First_Name"),
+                        resultSet.getString("Last_Name"),resultSet.getString("Passport_Number"),
+                        resultSet.getString("Email"),resultSet.getString("Phone_Number")));
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+
+        } finally
+        {
+            ConnectionPool.getInstance().checkIn(connection);
+            try
+            {
+                if (resultSet != null)
+                {
+                    resultSet.close();
+                }
+                if (preparedStatement != null)
+                {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex)
+            {
                 ex.printStackTrace();
             }
         }

@@ -1,4 +1,5 @@
 package edu.hotelmanagment.controller;
+/*
 
 import edu.hotelmanagment.model.Employee;
 import edu.hotelmanagment.wrapper.WrapperEmployee;
@@ -31,3 +32,5 @@ public class ControllerEmployee {
         return WrapperEmployee.selectById(id);
     };
 }
+
+ */

@@ -167,7 +167,6 @@ public class ReservationManagementWindow
         guestTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 guestID.set(newValue.getGuestID());
-                //System.out.println("Selected Guest ID: " + newValue.getGuestID());//--------------------------------------
             }
         });
         guestTableView.setRowFactory(tv -> {
@@ -224,7 +223,6 @@ public class ReservationManagementWindow
         roomTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         roomTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                //System.out.println("Selected Room ID: " + newValue.getRoomID());
                 roomID=newValue.getRoomID();
             }
         });
@@ -239,8 +237,6 @@ public class ReservationManagementWindow
             });
             return row;
         });
-
-
         Separator roomSeparator = new Separator();
 
         Label numberOfGuestsLabel = new Label("Select number of guests:");
@@ -257,10 +253,8 @@ public class ReservationManagementWindow
             Integer selectedNumberOfGuests = numberOfGuestsComboBox.getValue();
             if (selectedNumberOfGuests != null) {
                 numberOfGuests.set(selectedNumberOfGuests);
-                //System.out.println("Number of guests: " + selectedNumberOfGuests);//------------------------------------------
             }
         });
-
 
         Separator guestSeparator = new Separator();
         Label reservationMethodLabel = new Label("Select Reservation Method:");
@@ -271,7 +265,6 @@ public class ReservationManagementWindow
 
         reservationMethodComboBox.setOnAction(e -> {
             int selectedIndex = reservationMethodComboBox.getSelectionModel().getSelectedIndex();
-            //System.out.println("Selected Reservation Method Index: " + selectedIndex);  // Ispisuje redni broj---------------------------------------------------------------
             reservationTypeID.set(selectedIndex + 1);
         });
 
@@ -303,7 +296,6 @@ public class ReservationManagementWindow
             int selectedIndex = employeeComboBox.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {
                 int selectedEmployeeID = employeeIDs.get(selectedIndex); // Dohvatanje ID-a prema indeksu
-                //System.out.println("Selected Employee ID: " + selectedEmployeeID);//------------------------------------------------------------
                 employeeID.set(selectedEmployeeID);
             }
         });
@@ -415,18 +407,17 @@ public class ReservationManagementWindow
 
         Label checkInLabel = new Label("Check-In:");
         DatePicker checkInDatePicker = new DatePicker();
-        checkInDatePicker.setValue(LocalDate.now()); // Podrazumevani datum je današnji
+        checkInDatePicker.setValue(LocalDate.now());
 
         Label checkOutLabel = new Label("Check-Out:");
         DatePicker checkOutDatePicker = new DatePicker();
-        checkOutDatePicker.setValue(LocalDate.now().plusDays(1)); // Podrazumevani Check-Out je sutra
+        checkOutDatePicker.setValue(LocalDate.now().plusDays(1));
 
-// Ograničenje za Check-In: samo budući datumi
         checkInDatePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                setDisable(empty || date.isBefore(LocalDate.now())); // Onemogućava prošle datume
+                setDisable(empty || date.isBefore(LocalDate.now()));
             }
         });
 
@@ -440,14 +431,12 @@ public class ReservationManagementWindow
 
         checkInDatePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
             if (newDate != null && checkOutDatePicker.getValue().isBefore(newDate.plusDays(1))) {
-                checkOutDatePicker.setValue(newDate.plusDays(1)); // Postavi Check-Out datum za 1 dan nakon Check-In datuma
+                checkOutDatePicker.setValue(newDate.plusDays(1));
             }
         });
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            //System.out.println("Check-In Date: " + checkInDatePicker.getValue());
-            //System.out.println("Check-Out Date: " + checkOutDatePicker.getValue());
             dateStage.close();
             loadAvailableRooms(java.sql.Date.valueOf(checkInDatePicker.getValue()),java.sql.Date.valueOf(checkOutDatePicker.getValue()));
             checkInDate=java.sql.Date.valueOf(checkInDatePicker.getValue());
@@ -456,14 +445,14 @@ public class ReservationManagementWindow
         });
 
         HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER); // Poravnanje dugmeta u centar
+        buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().add(confirmButton);
 
-        VBox layout = new VBox(10); // Razmak između elemenata
+        VBox layout = new VBox(10);
         layout.setPadding(new Insets(20));
         layout.getChildren().addAll(checkInLabel, checkInDatePicker, checkOutLabel, checkOutDatePicker, buttonBox);
 
-        Scene scene = new Scene(layout, 200, 200); // Veličina prozora
+        Scene scene = new Scene(layout, 200, 200);
         dateStage.setScene(scene);
         dateStage.show();
     }
@@ -647,5 +636,10 @@ public class ReservationManagementWindow
             rooms=FXCollections.observableArrayList(WrapperRoom.getAvailableRooms(checkInDate,checkOutDate));
             roomTableView.setItems(rooms);
         }
+    }
+
+    private void viewGuestsForReservation()
+    {
+
     }
 }

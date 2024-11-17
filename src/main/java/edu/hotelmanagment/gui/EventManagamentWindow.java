@@ -2,11 +2,9 @@ package edu.hotelmanagment.gui;
 
 import edu.hotelmanagment.model.Employee;
 import edu.hotelmanagment.model.Event;
+import edu.hotelmanagment.model.EventHasGuest;
 import edu.hotelmanagment.model.Guest;
-import edu.hotelmanagment.wrapper.WrapperEmployee;
-import edu.hotelmanagment.wrapper.WrapperEvent;
-import edu.hotelmanagment.wrapper.WrapperGuest;
-import edu.hotelmanagment.wrapper.WrapperRoom;
+import edu.hotelmanagment.wrapper.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -32,14 +30,13 @@ public class EventManagamentWindow
 
     ObservableList<Event> events;
     TableView<Event> eventTableView;
-    Integer employeeID;
+    //Integer employeeID;
     public EventManagamentWindow()
     {
         Stage eventStage = new Stage();
         eventStage.setTitle("Event Management");
         eventStage.setResizable(false);
 
-        // Create buttons for event actions
         Button addEvent = new Button("Add Event");
         Button deleteEvent = new Button("Delete Event");
         Button addGuestsEvent = new Button("Add Guests");
@@ -50,8 +47,8 @@ public class EventManagamentWindow
         deleteEvent.setOnAction(e -> deleteEvent());
         addGuestsEvent.setOnAction(e->addGuests());
 
-        addEvent.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;"); // Green button with white text
-        deleteEvent.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;"); // Red button with white text
+        addEvent.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;");
+        deleteEvent.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;");
         //editEvent.setStyle("-fx-background-color: #ded93a; -fx-text-fill: black;"); // Yellow button with black text
 
         TableColumn<Event, Integer> eventIDColumn = new TableColumn<>("Event ID");
@@ -83,12 +80,14 @@ public class EventManagamentWindow
 
 
         eventTableView.setOnMouseClicked(event -> {
-            // Action to perform on row click, e.g., selection indication
+            if (event.getClickCount() == 1) {
+                Event selectedEvent = eventTableView.getSelectionModel().getSelectedItem();
+                if (selectedEvent != null) {
+                    int eventID = selectedEvent.getEventID();
+                    showGuestsForEvent(eventID);
+                }
+            }
         });
-
-        // Label za izbor zaposlenog koji pravi event
-
-
 
         HBox buttonBox = new HBox(10, addEvent, deleteEvent,addGuestsEvent);
         buttonBox.setPadding(new Insets(2, 0, 2, 0));
@@ -196,7 +195,6 @@ public class EventManagamentWindow
         formGrid.add(employeeComboBox, 1, 4);
         formGrid.add(buttonBox, 0, 5, 2, 1); // Center the button and span two columns
 
-// Scene setup
         Scene dialogScene = new Scene(formGrid, 280, 300);
         newEventStage.setScene(dialogScene);
 
@@ -262,7 +260,6 @@ public class EventManagamentWindow
         eventComboBox.setPrefWidth(200);
         List<Integer> eventIDs = new ArrayList<>();
 
-// Pretpostavimo da metoda WrapperEvent.selectAllEvents() vraća listu svih događaja (Event objekata)
         List<Event> events = WrapperEvent.selectAll();
         for (Event event : events) {
             eventComboBox.getItems().add("Event ID " + event.getEventID() + ": " + event.getName());
@@ -303,10 +300,8 @@ public class EventManagamentWindow
         guestTableView.setFixedCellSize(25);
         guestTableView.setPrefHeight(guestTableView.getFixedCellSize() * 6 + 28);
 
-// Omogućavanje višestrukog odabira
         guestTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-// Prikazivanje odabranih redova sa bojom
         guestTableView.setRowFactory(tv -> {
             TableRow<Guest> row = new TableRow<>();
             row.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
@@ -319,7 +314,6 @@ public class EventManagamentWindow
             return row;
         });
 
-// Dugme Confirm za potvrdu i unos
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
             Integer selectedEventIndex = eventComboBox.getSelectionModel().getSelectedIndex();
@@ -333,10 +327,11 @@ public class EventManagamentWindow
             ObservableList<Guest> selectedGuests = guestTableView.getSelectionModel().getSelectedItems();
             if (!selectedGuests.isEmpty()) {
                 for (Guest guest : selectedGuests) {
-                    //WrapperEventHasGuest.insert(selectedEventID, guest.getGuestID()); // Insert svakog odabranog gosta na događaj
+                    EventHasGuest eg=new EventHasGuest(selectedEventID, guest.getGuestID());
+                    WrapperEventHasGuest.insert(eg);
                 }
             }
-            dialogStage.close(); // Zatvara prozor nakon potvrde
+            dialogStage.close();
         });
 
         VBox buttonBox = new VBox(confirmButton);
@@ -346,14 +341,11 @@ public class EventManagamentWindow
         VBox mainLayout = new VBox(10, selectEventLabel, eventComboBox, separator, headerLabel, guestTableView, buttonBox);
         mainLayout.setPadding(new Insets(10));
 
-// Scene setup
         Scene dialogScene = new Scene(mainLayout, 500, 500); // Podesavanje velicine prozora
         dialogStage.setScene(dialogScene);
 
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.showAndWait();
-
-
     }
 
     private void reloadData()
@@ -361,6 +353,47 @@ public class EventManagamentWindow
         events.clear();
         events = FXCollections.observableArrayList(WrapperEvent.selectAll());
         eventTableView.setItems(events);
+    }
+
+    private void showGuestsForEvent(int eventID) {
+        Stage guestStage = new Stage();
+        guestStage.setTitle("Guests for Event ID " + eventID);
+
+        TableView<Guest> guestTableView = new TableView<>();
+
+        TableColumn<Guest, Integer> guestIDColumn = new TableColumn<>("Guest ID");
+        guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("GuestID"));
+
+        TableColumn<Guest, String> firstNameColumn = new TableColumn<>("First Name");
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
+
+        TableColumn<Guest, String> lastNameColumn = new TableColumn<>("Last Name");
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("LastName"));
+
+        TableColumn<Guest, String> passportNumberColumn = new TableColumn<>("Passport Number");
+        passportNumberColumn.setCellValueFactory(new PropertyValueFactory<>("passportNumber"));
+
+        TableColumn<Guest, String> emailColumn = new TableColumn<>("Email");
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        TableColumn<Guest, String> phoneNumberColumn = new TableColumn<>("Phone Number");
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+
+        guestTableView.getColumns().addAll(
+                guestIDColumn, firstNameColumn, lastNameColumn,
+                passportNumberColumn, emailColumn, phoneNumberColumn
+        );
+
+        ObservableList<Guest> guests = FXCollections.observableArrayList(WrapperGuest.selectByEventID(eventID));
+        guestTableView.setItems(guests);
+
+        VBox layout = new VBox(10, guestTableView);
+        layout.setPadding(new Insets(10));
+
+        Scene scene = new Scene(layout, 500, 300);
+        guestStage.setScene(scene);
+        guestStage.initModality(Modality.APPLICATION_MODAL);
+        guestStage.showAndWait();
     }
 
 

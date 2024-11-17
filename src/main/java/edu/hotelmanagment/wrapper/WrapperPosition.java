@@ -1,4 +1,6 @@
 package edu.hotelmanagment.wrapper;
+
+/*
 import edu.hotelmanagment.model.Position;
 import edu.hotelmanagment.util.ConnectionPool;
 import edu.hotelmanagment.util.DBUtil;
@@ -148,3 +150,5 @@ public class WrapperPosition
         return retVal;
     }
 }
+
+ */

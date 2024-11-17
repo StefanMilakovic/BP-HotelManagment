@@ -1,5 +1,6 @@
 package edu.hotelmanagment.controller;
 
+/*
 import edu.hotelmanagment.model.Position;
 import edu.hotelmanagment.wrapper.WrapperPosition;
 
@@ -28,13 +29,13 @@ public class ControllerPosition
     };
 
 
-    /*
+
     public List<Position> getPositionById(int id)
     {
         WrapperPosition.
     }
 
-     */
-
 
 }
+
+ */

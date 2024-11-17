@@ -1,5 +1,6 @@
 package edu.hotelmanagment.controller;
 
+/*
 import edu.hotelmanagment.model.Reservation;
 import edu.hotelmanagment.wrapper.WrapperReservation;
 
@@ -33,3 +34,5 @@ public class ControllerReservation
         return WrapperReservation.selectById(id);
     };
 }
+
+ */

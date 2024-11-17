@@ -13,7 +13,6 @@ public class WrapperReservationHasItem
 {
     public static final String SQL_INSERT="insert into reservation_has_item(Date,Quantity,ItemID,ReservationID) values(?,?,?,?)";
 
-
     public static int insert(ReservationHasItem ri)
     {
         int retVal = 0;
@@ -27,7 +26,6 @@ public class WrapperReservationHasItem
 
             preparedStatement.setDate(1,ri.getDate());
             preparedStatement.setInt(2,ri.getQuantity());
-            //preparedStatement.setDouble(3,0);
             preparedStatement.setDouble(3,ri.getItemID());
             preparedStatement.setInt(4,ri.getReservationID());
 

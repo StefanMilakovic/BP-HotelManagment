@@ -1,5 +1,5 @@
 package edu.hotelmanagment.model;
-
+/*
 import java.util.Objects;
 
 public class Position
@@ -42,7 +42,7 @@ public class Position
         PositionName = positionName;
     }
 
-    /*
+
     public String getDescription()
     {
         return Description;
@@ -53,7 +53,7 @@ public class Position
         Description = description;
     }
 
-     */
+
 
     public Double getSalary()
     {
@@ -86,3 +86,4 @@ public class Position
         return  "PositionID=" + PositionID + ", PositionName='" + PositionName + '\'' + ", Salary=" + Salary +"\n";
     }
 }
+*/
