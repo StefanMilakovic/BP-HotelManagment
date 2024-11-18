@@ -30,7 +30,7 @@ public class EventManagamentWindow
 
     ObservableList<Event> events;
     TableView<Event> eventTableView;
-    //Integer employeeID;
+
     public EventManagamentWindow()
     {
         Stage eventStage = new Stage();
@@ -341,7 +341,7 @@ public class EventManagamentWindow
         VBox mainLayout = new VBox(10, selectEventLabel, eventComboBox, separator, headerLabel, guestTableView, buttonBox);
         mainLayout.setPadding(new Insets(10));
 
-        Scene dialogScene = new Scene(mainLayout, 500, 500); // Podesavanje velicine prozora
+        Scene dialogScene = new Scene(mainLayout, 500, 350);
         dialogStage.setScene(dialogScene);
 
         dialogStage.initModality(Modality.APPLICATION_MODAL);

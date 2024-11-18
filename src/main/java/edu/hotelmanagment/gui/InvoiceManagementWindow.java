@@ -1,0 +1,142 @@
+package edu.hotelmanagment.gui;
+
+import edu.hotelmanagment.dao.GuestDAO;
+import edu.hotelmanagment.dao.InvoiceDAO;
+import edu.hotelmanagment.dao.ReservationDAO;
+import edu.hotelmanagment.model.Guest;
+import edu.hotelmanagment.model.Reservation;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class InvoiceManagementWindow
+{
+    TableView<Guest> guestTableView = new TableView<>();
+    ObservableList<Guest> guests;
+
+    public InvoiceManagementWindow() {
+        Stage invoiceWindow = new Stage();  // Create a new stage
+        invoiceWindow.setTitle("Invoice Management");
+        invoiceWindow.setResizable(false);
+
+        Label headerLabel = new Label("Select guest:");
+        headerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        TableColumn<Guest, Integer> guestIDColumn = new TableColumn<>("Guest ID");
+        guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("GuestID"));
+
+        TableColumn<Guest, String> firstNameColumn = new TableColumn<>("First Name");
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
+
+        TableColumn<Guest, String> lastNameColumn = new TableColumn<>("Last Name");
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("LastName"));
+
+        TableColumn<Guest, String> passportNumberColumn = new TableColumn<>("Passport Number");
+        passportNumberColumn.setCellValueFactory(new PropertyValueFactory<>("passportNumber"));
+
+        TableColumn<Guest, String> emailColumn = new TableColumn<>("Email");
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        TableColumn<Guest, String> phoneNumberColumn = new TableColumn<>("Phone Number");
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+
+        guestTableView.getColumns().setAll(
+                guestIDColumn, firstNameColumn, lastNameColumn,
+                passportNumberColumn, emailColumn, phoneNumberColumn
+        );
+
+        guests = FXCollections.observableArrayList(GuestDAO.selectAll());
+        guestTableView.setItems(guests);
+
+        guestTableView.setFixedCellSize(25);
+        guestTableView.setPrefHeight(guestTableView.getFixedCellSize() * 4 + 28);
+
+        guestTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        guestTableView.setRowFactory(tv -> {
+            TableRow<Guest> row = new TableRow<>();
+            row.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+                if (isNowSelected) {
+                    row.setStyle("-fx-background-color: #5fa62d;");
+                } else {
+                    row.setStyle("");
+                }
+            });
+            return row;
+        });
+        Label reservationLabel = new Label("Select a reservation:");
+        reservationLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        ComboBox<Reservation> reservationComboBox = new ComboBox<>();
+        reservationComboBox.setPromptText("Select a reservation");
+        reservationComboBox.setMaxWidth(150);
+
+        guestTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                ObservableList<Reservation> reservations = FXCollections.observableArrayList(
+                        ReservationDAO.selectByGuestId(newSelection.getGuestID())
+                );
+                reservationComboBox.setItems(reservations);
+            } else {
+                reservationComboBox.getItems().clear();
+            }
+        });
+
+        Label paymentTypeLabel = new Label("Select payment type:");
+        paymentTypeLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        ComboBox<String> paymentTypeComboBox = new ComboBox<>();
+        paymentTypeComboBox.setItems(FXCollections.observableArrayList("Cash", "Credit Card", "Debit Card"));
+        paymentTypeComboBox.setPromptText("Select payment type");
+        paymentTypeComboBox.setMaxWidth(150);
+
+        Button createButton = new Button("Create");
+        createButton.setStyle("-fx-font-size: 14px; -fx-background-color: #5fa62d; -fx-text-fill: white;");
+
+        HBox buttonContainer = new HBox(createButton);
+        buttonContainer.setAlignment(Pos.CENTER);
+
+        createButton.setOnAction(e -> {
+            Guest selectedGuest = guestTableView.getSelectionModel().getSelectedItem();
+            Reservation selectedReservation = reservationComboBox.getSelectionModel().getSelectedItem();
+            String selectedPaymentType = paymentTypeComboBox.getSelectionModel().getSelectedItem();
+            int paymentType=0;
+
+            if("Cash".equals(selectedPaymentType)) {
+                paymentType=1;
+            }else if("Credit Card".equals(selectedPaymentType)) {
+                paymentType=2;
+            }
+            else if("Debit Card".equals(selectedPaymentType)) {
+                paymentType=3;
+            }
+            InvoiceDAO.generateNewInvoice(guestTableView.getSelectionModel().getSelectedItem().getGuestID(),
+                    reservationComboBox.getSelectionModel().getSelectedItem().getReservationID(),paymentType);
+
+        });
+
+        Separator separator1 = new Separator();
+        Separator separator2 = new Separator();
+        Separator separator3 = new Separator();
+
+        VBox mainLayout = new VBox(10,
+                headerLabel, guestTableView, separator1,
+                reservationLabel, reservationComboBox, separator2,
+                paymentTypeLabel, paymentTypeComboBox, separator3,
+                buttonContainer
+        );
+        mainLayout.setPadding(new Insets(10));
+        mainLayout.setStyle("-fx-background-color: #f4f4f4;");
+
+        Scene scene = new Scene(mainLayout, 600, 400);
+        invoiceWindow.setScene(scene);
+        invoiceWindow.show();
+    }
+}

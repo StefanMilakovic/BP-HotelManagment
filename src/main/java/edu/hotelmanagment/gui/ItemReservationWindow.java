@@ -149,6 +149,7 @@ public class ItemReservationWindow
                 System.out.println("Adding " + quantity + " of Item: " + selectedItem.getName());
                 ReservationHasItem ri=new ReservationHasItem(null, Date.valueOf(LocalDate.now()),quantity,itemID,reservationID);
                 ReservationHasItemDAO.insert(ri);
+                window.close();
             } else {
                 System.out.println("No item selected or invalid quantity!");
             }

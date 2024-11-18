@@ -10,12 +10,68 @@ import java.util.List;
 
 public class InvoiceDAO
 {
+    /*
     private static final String SQL_SELECT="select * from invoice";
     private static final String SQL_INSERT="insert into invoice (Total_Amount,Issued_date,GuestID,ReservationID,PaymentTypeID)values(?,?,?,?,?)";
     private static final String SQL_UPDATE="update invoice set Total_Amount=?,Issued_date=?,GuestID=?,ReservationID=?,PaymentTypeID=? where InvoiceID=?";
     private static final String SQL_DELETE="delete from invoice where InvoiceID=?";
     private static final String SQL_SELECT_BY_ID = "select * from invoice where InvoiceID=?";
 
+     */
+    private static final String SQL_GENERATE_NEW_INVOCIE="{call GenerateInvoice(?,?,?)}";
+
+
+    public static int generateNewInvoice(int guestId,int reservationId,int paymentTypeId )
+    {
+        int retVal = 0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_GENERATE_NEW_INVOCIE, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setInt(1, guestId);
+            preparedStatement.setInt(2, reservationId);
+            preparedStatement.setInt(3, paymentTypeId);
+
+            retVal = preparedStatement.executeUpdate();
+
+            /*
+            //postavljanje istog primarnog kljuca na objektu kao i u bazi
+            if(retVal != 0)
+            {
+                resultSet = preparedStatement.getGeneratedKeys();
+                if(resultSet.next())
+                {
+                    i.setInvoiceID(resultSet.getInt(1));
+                }
+            }
+
+             */
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            ConnectionPool.getInstance().checkIn(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+    /*
     public static List<Invoice> selectAll()
     {
         List<Invoice> retVal = new ArrayList<>();
@@ -210,4 +266,6 @@ public class InvoiceDAO
         }
         return retVal;
     }
+
+     */
 }

@@ -17,6 +17,7 @@ public class ReservationDAO
             "GuestID=?,RoomID=?,ReservationTypeID=?,EmployeeID=? where ReservationID=?";
     private static final String SQL_DELETE="delete from reservation where ReservationID=?";
     private static final String SQL_SELECT_BY_ID = "select * from reservation where ReservationID=?";
+    private static final String SQL_SELECT_BY_GUEST_ID = "select * from reservation where GuestID=?";
 
 
     public static List<Reservation> selectAll()
@@ -189,6 +190,50 @@ public class ReservationDAO
             connection=DBUtil.getConnection();
             preparedStatement=connection.prepareStatement(SQL_SELECT_BY_ID,Statement.NO_GENERATED_KEYS);
             preparedStatement.setInt(1,id);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+
+                retVal=new Reservation(resultSet.getInt("ReservationID"),resultSet.getDate("Check_in_date"),
+                        resultSet.getDate("Check_out_date"),resultSet.getInt("Number_of_Guests"),
+                        resultSet.getInt("GuestID"),resultSet.getInt("RoomID"),
+                        resultSet.getInt("ReservationTypeID"),resultSet.getInt("EmployeeID"));
+            }
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            ConnectionPool.getInstance().checkIn(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+
+    public static Reservation selectByGuestId(int guestId)
+    {
+        Reservation retVal = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            connection=DBUtil.getConnection();
+            preparedStatement=connection.prepareStatement(SQL_SELECT_BY_GUEST_ID);
+            preparedStatement.setInt(1,guestId);
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {

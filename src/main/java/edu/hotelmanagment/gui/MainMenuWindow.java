@@ -28,6 +28,7 @@ public class MainMenuWindow
         Button btnItems = new Button("Add Item to Reservation");
         Button btnEvents=new Button("Event Management");
         Button btnInvoices = new Button("Invoices");
+        Button btnReview=new Button("Review");
 
         btnReservations.setMinWidth(200);
         btnGuests.setMinWidth(200);
@@ -35,6 +36,7 @@ public class MainMenuWindow
         btnItems.setMinWidth(200);
         btnEvents.setMinWidth(200);
         btnInvoices.setMinWidth(200);
+        btnReview.setMinWidth(200);
 
         btnReservations.setOnAction(e -> handleReservations());
         btnGuests.setOnAction(e -> handleRooms());
@@ -42,10 +44,11 @@ public class MainMenuWindow
         btnItems.setOnAction(e->handleItems());
         btnEvents.setOnAction(e->handleEvents());
         btnInvoices.setOnAction(e -> handleInvoices());
+        btnReview.setOnAction(e->handleReview());
 
         VBox vbox = new VBox(15);
         vbox.setStyle("-fx-alignment: center;");
-        vbox.getChildren().addAll(titleLabel, btnReservations, btnGuests, btnEmployees,btnItems,btnEvents, btnInvoices);
+        vbox.getChildren().addAll(titleLabel, btnReservations, btnGuests, btnEmployees,btnItems,btnEvents, btnInvoices,btnReview);
 
 
         Scene scene = new Scene(vbox, 400, 400);
@@ -76,6 +79,11 @@ public class MainMenuWindow
     }
 
     private void handleInvoices() {
+        new InvoiceManagementWindow();
+    }
 
+    private void handleReview()
+    {
+        new ReviewMenagementWindow();
     }
 }
