@@ -20,11 +20,56 @@ public class ReviewMenagementWindow
     TableView<Guest> guestTableView = new TableView<>();
     ObservableList<Guest> guests;
 
+    TableView<Review> reviewTableView = new TableView<>();
+    ObservableList<Guest> reviews;
+
     public ReviewMenagementWindow()
     {
         Stage reviewWindow = new Stage();
         reviewWindow.setTitle("Review Management");
         reviewWindow.setResizable(false);
+
+        Button addReviewButton = new Button("Add New Review");
+        addReviewButton.setOnAction(e -> addNewReview());
+
+        TableColumn<Review, Integer> reviewIDColumn = new TableColumn<>("Review ID");
+        reviewIDColumn.setCellValueFactory(new PropertyValueFactory<>("reviewID"));
+
+        TableColumn<Review, Integer> guestIDColumn = new TableColumn<>("Guest ID");
+        guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("guestID"));
+
+        TableColumn<Review, Integer> ratingColumn = new TableColumn<>("Rating");
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
+        TableColumn<Review, String> descriptionColumn = new TableColumn<>("Description");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        TableColumn<Review, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
+        reservationIDColumn.setCellValueFactory(new PropertyValueFactory<>("reservationID"));
+
+        reviewTableView.getColumns().addAll(
+                reviewIDColumn, guestIDColumn, ratingColumn,
+                descriptionColumn, reservationIDColumn
+        );
+
+        reviewTableView.setItems(FXCollections.observableArrayList(ReviewDAO.selectAll()));
+
+        Label averageRatingLabel = new Label("Average Rating: " + ReviewDAO.getAverageRating());
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+        layout.getChildren().addAll(addReviewButton, reviewTableView, averageRatingLabel);
+
+        Scene scene = new Scene(layout, 600, 400);
+        reviewWindow.setScene(scene);
+        reviewWindow.show();
+    }
+
+    public void addNewReview()
+    {
+        Stage addNewReviewWindow = new Stage();
+        addNewReviewWindow.setTitle("Review Management");
+        addNewReviewWindow.setResizable(false);
 
         Label headerLabel = new Label("Select a guest:");
         headerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
@@ -120,21 +165,20 @@ public class ReviewMenagementWindow
             int rating = ratingSpinner.getValue();
             String description = descriptionField.getText();
 
+            /*
             if (description.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a review description.");
                 alert.showAndWait();
             }
 
+             */
+
             Review newReview = new Review(null,guestTableView.getSelectionModel().getSelectedItem().getGuestID(),
                     rating,description,reservationComboBox.getSelectionModel().getSelectedItem().getReservationID());
 
-            try {
-                ReviewDAO.insert(newReview);
-                reviewWindow.close();
-            } catch (Exception ex) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "A review already exists for this guest and reservation.");
-                alert.showAndWait();
-            }
+            ReviewDAO.insert(newReview);
+            addNewReviewWindow.close();
+            reloadData();
         });
 
         VBox mainLayout = new VBox(10, headerLabel, guestTableView, separator,
@@ -144,8 +188,15 @@ public class ReviewMenagementWindow
         mainLayout.setPadding(new Insets(10));
 
         Scene scene = new Scene(mainLayout, 600, 500);
-        reviewWindow.setScene(scene);
-        reviewWindow.show();
+        addNewReviewWindow.setScene(scene);
+        addNewReviewWindow.show();
 
     }
+
+    public void reloadData()
+    {
+        reviews.clear();
+        reviewTableView.setItems(FXCollections.observableArrayList(ReviewDAO.selectAll()));
+    }
+
 }

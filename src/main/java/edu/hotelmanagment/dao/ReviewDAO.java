@@ -1,5 +1,6 @@
 package edu.hotelmanagment.dao;
 
+import edu.hotelmanagment.model.Reservation;
 import edu.hotelmanagment.model.Review;
 import edu.hotelmanagment.util.ConnectionPool;
 import edu.hotelmanagment.util.DBUtil;
@@ -94,6 +95,44 @@ public class ReviewDAO
                     preparedStatement.close();
                 }
 
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return retVal;
+    }
+
+    public static Double getAverageRating()
+    {
+        Double retVal = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            connection=DBUtil.getConnection();
+            preparedStatement=connection.prepareStatement("SELECT * FROM hotel_database.hotel_average_rating;");
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+                retVal=resultSet.getDouble(1);
+            }
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            ConnectionPool.getInstance().checkIn(connection);
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
