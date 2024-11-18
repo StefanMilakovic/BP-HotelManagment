@@ -10,8 +10,9 @@ import java.util.List;
 
 public class InvoiceDAO
 {
-    /*
+
     private static final String SQL_SELECT="select * from invoice";
+    /*
     private static final String SQL_INSERT="insert into invoice (Total_Amount,Issued_date,GuestID,ReservationID,PaymentTypeID)values(?,?,?,?,?)";
     private static final String SQL_UPDATE="update invoice set Total_Amount=?,Issued_date=?,GuestID=?,ReservationID=?,PaymentTypeID=? where InvoiceID=?";
     private static final String SQL_DELETE="delete from invoice where InvoiceID=?";
@@ -37,20 +38,6 @@ public class InvoiceDAO
             preparedStatement.setInt(3, paymentTypeId);
 
             retVal = preparedStatement.executeUpdate();
-
-            /*
-            //postavljanje istog primarnog kljuca na objektu kao i u bazi
-            if(retVal != 0)
-            {
-                resultSet = preparedStatement.getGeneratedKeys();
-                if(resultSet.next())
-                {
-                    i.setInvoiceID(resultSet.getInt(1));
-                }
-            }
-
-             */
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,7 +58,7 @@ public class InvoiceDAO
         return retVal;
     }
 
-    /*
+
     public static List<Invoice> selectAll()
     {
         List<Invoice> retVal = new ArrayList<>();
@@ -107,6 +94,7 @@ public class InvoiceDAO
         return retVal;
     }
 
+/*
     public static int insert(Invoice i)
     {
         int retVal = 0;

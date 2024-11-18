@@ -4,6 +4,7 @@ import edu.hotelmanagment.dao.GuestDAO;
 import edu.hotelmanagment.dao.InvoiceDAO;
 import edu.hotelmanagment.dao.ReservationDAO;
 import edu.hotelmanagment.model.Guest;
+import edu.hotelmanagment.model.Invoice;
 import edu.hotelmanagment.model.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +22,72 @@ public class InvoiceManagementWindow
     TableView<Guest> guestTableView = new TableView<>();
     ObservableList<Guest> guests;
 
-    public InvoiceManagementWindow() {
+
+    private TableView<Invoice> invoiceTableView = new TableView<>();
+    private ObservableList<Invoice> invoices = FXCollections.observableArrayList();
+
+    public InvoiceManagementWindow()
+    {
+        Stage invoiceWindow = new Stage();  // Create a new stage
+        invoiceWindow.setTitle("Invoice Management");
+        invoiceWindow.setResizable(false);
+
+        // Button for creating a new invoice
+        Button generateInvoiceButton = new Button("Generate New Invoice");
+        //generateInvoiceButton.setStyle("-fx-font-size: 14px; -fx-background-color: #5fa62d; -fx-text-fill: white;");
+
+        generateInvoiceButton.setOnAction(e -> generateNewInvoice());
+
+        // Table for displaying invoices
+        //Label invoiceLabel = new Label("Invoices:");
+        //invoiceLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        // Columns for the Invoice Table
+        TableColumn<Invoice, Integer> invoiceIDColumn = new TableColumn<>("Invoice ID");
+        invoiceIDColumn.setCellValueFactory(new PropertyValueFactory<>("InvoiceID"));
+
+        TableColumn<Invoice, Double> totalAmountColumn = new TableColumn<>("Total Amount");
+        totalAmountColumn.setCellValueFactory(new PropertyValueFactory<>("TotalAmount"));
+
+        TableColumn<Invoice, java.sql.Date> issuedDateColumn = new TableColumn<>("Issued Date");
+        issuedDateColumn.setCellValueFactory(new PropertyValueFactory<>("IssuedDate"));
+
+        TableColumn<Invoice, Integer> guestIDColumn = new TableColumn<>("Guest ID");
+        guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("GuestID"));
+
+        TableColumn<Invoice, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
+        reservationIDColumn.setCellValueFactory(new PropertyValueFactory<>("ReservationID"));
+
+        TableColumn<Invoice, Integer> paymentTypeColumn = new TableColumn<>("Payment Type");
+        paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("PaymentTypeID"));
+
+        // Adding columns to the table
+        invoiceTableView.getColumns().setAll(invoiceIDColumn, totalAmountColumn, issuedDateColumn,
+                guestIDColumn, reservationIDColumn, paymentTypeColumn);
+
+        // Load the invoices into the table
+        loadInvoices();
+
+        // Setup the table view and other GUI elements
+        //invoiceTableView.setFixedCellSize(25);
+        //invoiceTableView.setPrefHeight(invoiceTableView.getFixedCellSize() * 4 + 28);
+        //invoiceTableView.setMaxWidth(600);
+
+        // Create layout for the window
+        VBox mainLayout = new VBox(10,
+                generateInvoiceButton, invoiceTableView
+        );
+        mainLayout.setPadding(new Insets(10));
+        mainLayout.setStyle("-fx-background-color: #f4f4f4;");
+
+        // Create scene and set it to the stage
+        Scene scene = new Scene(mainLayout, 530, 300);
+        invoiceWindow.setScene(scene);
+        invoiceWindow.show();
+    }
+
+    private void generateNewInvoice()
+    {
         Stage invoiceWindow = new Stage();  // Create a new stage
         invoiceWindow.setTitle("Invoice Management");
         invoiceWindow.setResizable(false);
@@ -138,5 +204,13 @@ public class InvoiceManagementWindow
         Scene scene = new Scene(mainLayout, 600, 400);
         invoiceWindow.setScene(scene);
         invoiceWindow.show();
+    }
+
+    private void loadInvoices() {
+        invoices.clear();  // Clear any existing data
+
+        // Fetch all invoices from the database (using InvoiceDAO.selectAll() as an example)
+        invoices.addAll(InvoiceDAO.selectAll()); // Assuming InvoiceDAO.selectAll() returns a List of invoices
+        invoiceTableView.setItems(invoices);  // Set the data in the TableView
     }
 }

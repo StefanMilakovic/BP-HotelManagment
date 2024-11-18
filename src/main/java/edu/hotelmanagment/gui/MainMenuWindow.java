@@ -27,8 +27,8 @@ public class MainMenuWindow
         Button btnEmployees = new Button("Employees");
         Button btnItems = new Button("Add Item to Reservation");
         Button btnEvents=new Button("Event Management");
-        Button btnInvoices = new Button("Invoices");
-        Button btnReview=new Button("Review");
+        Button btnInvoices = new Button("Invoice Management");
+        Button btnReview=new Button("Reviews");
 
         btnReservations.setMinWidth(200);
         btnGuests.setMinWidth(200);
