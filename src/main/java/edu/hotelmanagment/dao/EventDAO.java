@@ -27,7 +27,6 @@ public class EventDAO
             preparedStatement = connection.prepareStatement(SQL_SELECT);
             resultSet = preparedStatement.executeQuery();
 
-
             while (resultSet.next())
                 retVal.add(new Event(resultSet.getInt("EventID"),resultSet.getString("Name"),
                         resultSet.getDate("Date"),resultSet.getString("Location"),
@@ -71,7 +70,6 @@ public class EventDAO
 
             retVal = preparedStatement.executeUpdate();
 
-            //postavljanje istog primarnog kljuca na objektu kao i u bazi
             if(retVal != 0)
             {
                 resultSet = preparedStatement.getGeneratedKeys();
@@ -118,7 +116,7 @@ public class EventDAO
             preparedStatement.setInt(5, event.getEmployeeID());
             preparedStatement.setInt(5, event.getEventID());
 
-            int rowsUpdated=preparedStatement.executeUpdate();//vraca broj azuriranih redova
+            int rowsUpdated=preparedStatement.executeUpdate();
 
             if (rowsUpdated > 0)
             {
@@ -151,7 +149,6 @@ public class EventDAO
             preparedStatement.setInt(1, id);
             retVal = preparedStatement.executeUpdate();
 
-            //opciono
             if (retVal > 0)
             {
                 System.out.println("Rows deleted: " + retVal);

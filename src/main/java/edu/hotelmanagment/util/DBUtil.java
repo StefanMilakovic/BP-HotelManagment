@@ -6,21 +6,6 @@ public class DBUtil {
 
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-    /*
-    public static PreparedStatement prepareStatement(Connection c, String sql, boolean retGenKeys, Object... values) throws SQLException
-    {
-        PreparedStatement ps = c.prepareStatement(sql,
-                retGenKeys ? Statement.RETURN_GENERATED_KEYS
-                        : Statement.NO_GENERATED_KEYS);
-
-        for (int i = 0; i < values.length; i++)
-            ps.setObject(i + 1, values[i]);
-
-        return ps;
-    }
-
-     */
-
     public static Connection getConnection() throws SQLException {
         Connection c = connectionPool.checkOut();
         return c;

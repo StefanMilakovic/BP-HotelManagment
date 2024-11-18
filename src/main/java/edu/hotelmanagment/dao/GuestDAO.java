@@ -73,7 +73,6 @@ public class GuestDAO
 
             retVal = preparedStatement.executeUpdate();
 
-            //postavljanje istog primarnog kljuca na objektu kao i u bazi
             if(retVal != 0)
             {
                 resultSet = preparedStatement.getGeneratedKeys();
@@ -122,7 +121,7 @@ public class GuestDAO
             preparedStatement.setString(5,g.getPhoneNumber());
             preparedStatement.setInt(6,g.getGuestID());
 
-            int rowsUpdated=preparedStatement.executeUpdate();//vraca broj azuriranih redova
+            int rowsUpdated=preparedStatement.executeUpdate();
 
             if (rowsUpdated > 0)
             {
@@ -155,7 +154,6 @@ public class GuestDAO
             preparedStatement.setInt(1, id);
             retVal = preparedStatement.executeUpdate();
 
-            //opciono
             if (retVal > 0)
             {
                 System.out.println("Rows deleted: " + retVal);

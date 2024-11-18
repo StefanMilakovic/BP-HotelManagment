@@ -1,6 +1,5 @@
 package edu.hotelmanagment.gui;
 
-
 import edu.hotelmanagment.dao.*;
 import edu.hotelmanagment.model.Guest;
 import edu.hotelmanagment.model.Reservation;
@@ -14,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
 
 public class ReviewMenagementWindow
 {
@@ -22,19 +20,14 @@ public class ReviewMenagementWindow
     TableView<Guest> guestTableView = new TableView<>();
     ObservableList<Guest> guests;
 
-
     public ReviewMenagementWindow()
     {
         Stage reviewWindow = new Stage();
         reviewWindow.setTitle("Review Management");
         reviewWindow.setResizable(false);
 
-        // Header label
         Label headerLabel = new Label("Select a guest:");
         headerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-
-        // Define the TableView and its columns
-        TableView<Guest> guestTableView = new TableView<>();
 
         TableColumn<Guest, Integer> guestIDColumn = new TableColumn<>("Guest ID");
         guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("GuestID"));
@@ -62,7 +55,7 @@ public class ReviewMenagementWindow
         guestTableView.setItems(FXCollections.observableArrayList(GuestDAO.selectAll()));
 
         guestTableView.setFixedCellSize(25);
-        guestTableView.setPrefHeight(guestTableView.getFixedCellSize() * 4 + 28);  // Adjust to show a few rows
+        guestTableView.setPrefHeight(guestTableView.getFixedCellSize() * 4 + 28);
 
         guestTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         guestTableView.setRowFactory(tv -> {
@@ -142,11 +135,6 @@ public class ReviewMenagementWindow
                 Alert alert = new Alert(Alert.AlertType.WARNING, "A review already exists for this guest and reservation.");
                 alert.showAndWait();
             }
-            /*
-            ReviewDAO.insert(newReview);
-            reviewWindow.close();
-
-             */
         });
 
         VBox mainLayout = new VBox(10, headerLabel, guestTableView, separator,

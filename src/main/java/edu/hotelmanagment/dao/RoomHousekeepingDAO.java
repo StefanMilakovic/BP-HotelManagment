@@ -69,7 +69,6 @@ public class RoomHousekeepingDAO
 
             retVal = preparedStatement.executeUpdate();
 
-            //postavljanje istog primarnog kljuca na objektu kao i u bazi
             if(retVal != 0)
             {
                 resultSet = preparedStatement.getGeneratedKeys();
@@ -147,7 +146,6 @@ public class RoomHousekeepingDAO
             preparedStatement.setInt(1, id);
             retVal = preparedStatement.executeUpdate();
 
-            //opciono
             if (retVal > 0)
             {
                 System.out.println("Rows deleted: " + retVal);

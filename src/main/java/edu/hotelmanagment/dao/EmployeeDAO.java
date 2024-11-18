@@ -242,7 +242,6 @@ public class EmployeeDAO
         return retVal;
     }
 
-
     public static void update(Employee employee)
     {
         Connection connection = null;

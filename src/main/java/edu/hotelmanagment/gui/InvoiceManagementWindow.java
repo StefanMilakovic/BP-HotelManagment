@@ -22,27 +22,18 @@ public class InvoiceManagementWindow
     TableView<Guest> guestTableView = new TableView<>();
     ObservableList<Guest> guests;
 
-
-    private TableView<Invoice> invoiceTableView = new TableView<>();
-    private ObservableList<Invoice> invoices = FXCollections.observableArrayList();
+    TableView<Invoice> invoiceTableView = new TableView<>();
+    ObservableList<Invoice> invoices = FXCollections.observableArrayList();
 
     public InvoiceManagementWindow()
     {
-        Stage invoiceWindow = new Stage();  // Create a new stage
+        Stage invoiceWindow = new Stage();
         invoiceWindow.setTitle("Invoice Management");
         invoiceWindow.setResizable(false);
 
-        // Button for creating a new invoice
         Button generateInvoiceButton = new Button("Generate New Invoice");
-        //generateInvoiceButton.setStyle("-fx-font-size: 14px; -fx-background-color: #5fa62d; -fx-text-fill: white;");
-
         generateInvoiceButton.setOnAction(e -> generateNewInvoice());
 
-        // Table for displaying invoices
-        //Label invoiceLabel = new Label("Invoices:");
-        //invoiceLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-
-        // Columns for the Invoice Table
         TableColumn<Invoice, Integer> invoiceIDColumn = new TableColumn<>("Invoice ID");
         invoiceIDColumn.setCellValueFactory(new PropertyValueFactory<>("InvoiceID"));
 
@@ -61,26 +52,17 @@ public class InvoiceManagementWindow
         TableColumn<Invoice, Integer> paymentTypeColumn = new TableColumn<>("Payment Type");
         paymentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("PaymentTypeID"));
 
-        // Adding columns to the table
         invoiceTableView.getColumns().setAll(invoiceIDColumn, totalAmountColumn, issuedDateColumn,
                 guestIDColumn, reservationIDColumn, paymentTypeColumn);
 
-        // Load the invoices into the table
         loadInvoices();
 
-        // Setup the table view and other GUI elements
-        //invoiceTableView.setFixedCellSize(25);
-        //invoiceTableView.setPrefHeight(invoiceTableView.getFixedCellSize() * 4 + 28);
-        //invoiceTableView.setMaxWidth(600);
-
-        // Create layout for the window
         VBox mainLayout = new VBox(10,
                 generateInvoiceButton, invoiceTableView
         );
         mainLayout.setPadding(new Insets(10));
         mainLayout.setStyle("-fx-background-color: #f4f4f4;");
 
-        // Create scene and set it to the stage
         Scene scene = new Scene(mainLayout, 530, 300);
         invoiceWindow.setScene(scene);
         invoiceWindow.show();
@@ -88,7 +70,7 @@ public class InvoiceManagementWindow
 
     private void generateNewInvoice()
     {
-        Stage invoiceWindow = new Stage();  // Create a new stage
+        Stage invoiceWindow = new Stage();
         invoiceWindow.setTitle("Invoice Management");
         invoiceWindow.setResizable(false);
 
@@ -207,10 +189,8 @@ public class InvoiceManagementWindow
     }
 
     private void loadInvoices() {
-        invoices.clear();  // Clear any existing data
-
-        // Fetch all invoices from the database (using InvoiceDAO.selectAll() as an example)
-        invoices.addAll(InvoiceDAO.selectAll()); // Assuming InvoiceDAO.selectAll() returns a List of invoices
-        invoiceTableView.setItems(invoices);  // Set the data in the TableView
+        invoices.clear();
+        invoices.addAll(InvoiceDAO.selectAll());
+        invoiceTableView.setItems(invoices);
     }
 }

@@ -12,7 +12,6 @@ public class Employee
     public String phoneNumber;
     public java.sql.Date hireDate;
     public Boolean isActive=true;
-    //private Integer isActive;
     public Integer PositionID;
 
     public Employee(Integer employeeID, String firstName, String lastName, String email, String phoneNumber, Date hireDate, Boolean isActive, Integer positionID)

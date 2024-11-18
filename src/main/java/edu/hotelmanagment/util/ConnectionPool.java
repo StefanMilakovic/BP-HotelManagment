@@ -9,10 +9,6 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 public class ConnectionPool {
-
-	//private static final String BUNDLE_NAME = ConnectionPool.class.getName();
-
-	
 	private String jdbcURL;
 	private String username;
 	private String password;
@@ -33,7 +29,6 @@ public class ConnectionPool {
 	}
 
 	private ConnectionPool() {
-		//System.out.println("evo   "+BUNDLE_NAME);
 		readConfiguration();
 		try {
 			freeConnections = new ArrayList<Connection>();
@@ -50,7 +45,6 @@ public class ConnectionPool {
 	}
 
 	private void readConfiguration() {
-		//ResourceBundle bundle = PropertyResourceBundle.getBundle(BUNDLE_NAME);
 		ResourceBundle bundle = PropertyResourceBundle.getBundle("hotel");
 		jdbcURL = bundle.getString("jdbcURL");
 		username = bundle.getString("username");

@@ -1,6 +1,5 @@
 package edu.hotelmanagment.gui;
 
-//import edu.hotelmanagment.controller.ControllerRoom;
 import edu.hotelmanagment.model.Employee;
 import edu.hotelmanagment.model.Room;
 import edu.hotelmanagment.model.RoomHousekeeping;
@@ -110,7 +109,6 @@ public class RoomManagementWindow {
         housekeepingTableView.setFixedCellSize(25);
         housekeepingTableView.setPrefHeight(housekeepingTableView.getFixedCellSize() * 4 + 28);
 
-// Organizovanje elemenata u HBox i VBox
         HBox addButtonBox = new HBox(10, addRoom, editRoom, deleteRoom, housekeepingButton);
         addButtonBox.setPadding(new Insets(2, 0, 2, 0));
         addButtonBox.setStyle("-fx-alignment: center-left;");
@@ -118,7 +116,7 @@ public class RoomManagementWindow {
         VBox mainLayout = new VBox(10, addButtonBox, tableView, separator, housekeepingLabel, housekeepingTableView);
         mainLayout.setPadding(new Insets(10));
 
-        Scene scene = new Scene(mainLayout, 600, 400); // Povećan prostor za dve tabele
+        Scene scene = new Scene(mainLayout, 600, 400);
         roomStage.setScene(scene);
         roomStage.show();
     }
@@ -168,9 +166,9 @@ public class RoomManagementWindow {
         }
     });
 
-    VBox buttonBox = new VBox(10, addButton); // 10px spacing between button and other elements
+    VBox buttonBox = new VBox(10, addButton);
     buttonBox.setAlignment(Pos.CENTER);
-    buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Padding to keep distance from form fields
+    buttonBox.setPadding(new Insets(10, 0, 0, 0));
 
     GridPane formGrid = new GridPane();
     formGrid.setVgap(10);
@@ -185,9 +183,9 @@ public class RoomManagementWindow {
     formGrid.add(bedTypeComboBox, 1, 2);
     formGrid.add(amenitiesLabel, 0, 3);
     formGrid.add(amenitiesTextField, 1, 3);
-    formGrid.add(buttonBox, 0, 4, 2, 1); // Center the button and span two columns
+    formGrid.add(buttonBox, 0, 4, 2, 1);
 
-    Scene dialogScene = new Scene(formGrid, 270, 250); // Adjusted window size to accommodate new fields
+    Scene dialogScene = new Scene(formGrid, 270, 250);
     dialogStage.setScene(dialogScene);
 
     dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -217,7 +215,7 @@ public class RoomManagementWindow {
                 dialogStage.close();
             }});
 
-        VBox buttonBox = new VBox(10, deleteButton); // Button with spacing
+        VBox buttonBox = new VBox(10, deleteButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(10, 0, 0, 0));
 
@@ -228,9 +226,9 @@ public class RoomManagementWindow {
 
         formGrid.add(roomIdLabel, 0, 0);
         formGrid.add(roomIdTextField, 1, 0);
-        formGrid.add(buttonBox, 0, 1, 2, 1); // Center the button and span two columns
+        formGrid.add(buttonBox, 0, 1, 2, 1);
 
-        Scene dialogScene = new Scene(formGrid, 200, 100); // Adjusted size for Room ID input
+        Scene dialogScene = new Scene(formGrid, 200, 100);
         dialogStage.setScene(dialogScene);
 
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -293,7 +291,7 @@ public class RoomManagementWindow {
         VBox buttonBox = new VBox(10, updateButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        formGrid.add(buttonBox, 0, 6, 2, 1); // Center the button and span two columns
+        formGrid.add(buttonBox, 0, 6, 2, 1);
 
         updateButton.setOnAction(e -> {
             String floor = floorComboBox.getValue();
@@ -314,7 +312,7 @@ public class RoomManagementWindow {
             }
         });
 
-        Scene dialogScene = new Scene(formGrid, 300, 350); // Adjusted window size to fit all fields
+        Scene dialogScene = new Scene(formGrid, 300, 350);
         dialogStage.setScene(dialogScene);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.showAndWait();
@@ -323,7 +321,7 @@ public class RoomManagementWindow {
 
     private void reloadData() {
         rooms.clear();
-        rooms=FXCollections.observableArrayList(RoomDAO.selectAll());  // Metoda koja učitava podatke iz baze
+        rooms=FXCollections.observableArrayList(RoomDAO.selectAll());
         tableView.setItems(rooms);
     }
     private void reloadHousekeepingTable()
@@ -385,21 +383,19 @@ public class RoomManagementWindow {
             housekeepingStage.close();
         });
 
-// Organizovanje elemenata u GridPane
         GridPane gridPane = new GridPane();
         gridPane.setVgap(10);
         gridPane.setHgap(10);
         gridPane.setPadding(new Insets(20));
         gridPane.add(roomIdLabel, 0, 0);
         gridPane.add(roomIdTextField, 1, 0);
-        gridPane.add(confirmButton, 1, 1);  // Dugme je sada ispod TextField-a
+        gridPane.add(confirmButton, 1, 1);
         gridPane.add(dateLabel, 0, 2);
         gridPane.add(datePicker, 1, 2);
         gridPane.add(workerLabel, 0, 3);
         gridPane.add(workerComboBox, 1, 3);
         gridPane.add(addButton, 1, 4);
 
-// Postavljanje Scene i prikazivanje prozora
         Scene scene = new Scene(gridPane, 300, 230);
         housekeepingStage.setScene(scene);
         housekeepingStage.initModality(Modality.APPLICATION_MODAL);

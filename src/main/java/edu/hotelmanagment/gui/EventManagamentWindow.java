@@ -40,16 +40,13 @@ public class EventManagamentWindow
         Button addEvent = new Button("Add Event");
         Button deleteEvent = new Button("Delete Event");
         Button addGuestsEvent = new Button("Add Guests");
-        //Button editEvent = new Button("Edit Event");
 
         addEvent.setOnAction(e -> addNewEvent());
-        //editEvent.setOnAction(e -> editEvent());
         deleteEvent.setOnAction(e -> deleteEvent());
         addGuestsEvent.setOnAction(e->addGuests());
 
         addEvent.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;");
         deleteEvent.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;");
-        //editEvent.setStyle("-fx-background-color: #ded93a; -fx-text-fill: black;"); // Yellow button with black text
 
         TableColumn<Event, Integer> eventIDColumn = new TableColumn<>("Event ID");
         eventIDColumn.setCellValueFactory(new PropertyValueFactory<>("eventID"));
@@ -108,17 +105,14 @@ public class EventManagamentWindow
 
         int fieldWidth = 150;
 
-// Name label and field
         Label nameLabel = new Label("Name:");
         TextField nameTextField = new TextField();
         nameTextField.setPrefWidth(fieldWidth);
 
-// Event date label and picker
         Label eventDateLabel = new Label("Event Date:");
         DatePicker eventDatePicker = new DatePicker();
         eventDatePicker.setPrefWidth(fieldWidth);
 
-// Location label and field
         Label locationLabel = new Label("Location:");
         TextField locationTextField = new TextField();
         locationTextField.setPrefWidth(fieldWidth);
@@ -138,7 +132,7 @@ public class EventManagamentWindow
             employeeComboBox.getItems().clear();
             employeeIDs.clear();
 
-            List<Employee> employees = EmployeeDAO.selectManagers(); // Metoda za selekciju menadžera
+            List<Employee> employees = EmployeeDAO.selectManagers();
             for (Employee emp : employees) {
                 employeeComboBox.getItems().add(emp.getFirstName() + " " + emp.getLastName());
                 employeeIDs.add(emp.getEmployeeID());
@@ -193,17 +187,13 @@ public class EventManagamentWindow
         formGrid.add(descriptionTextField, 1, 3);
         formGrid.add(employeeLabel, 0, 4);
         formGrid.add(employeeComboBox, 1, 4);
-        formGrid.add(buttonBox, 0, 5, 2, 1); // Center the button and span two columns
+        formGrid.add(buttonBox, 0, 5, 2, 1);
 
         Scene dialogScene = new Scene(formGrid, 280, 300);
         newEventStage.setScene(dialogScene);
 
         newEventStage.initModality(Modality.APPLICATION_MODAL);
         newEventStage.showAndWait();
-
-    }
-    private void editEvent()
-    {
 
     }
     private void deleteEvent()
@@ -229,7 +219,7 @@ public class EventManagamentWindow
                 deleteEvent.close();
             }});
 
-        VBox buttonBox = new VBox(10, deleteButton); // Button with spacing
+        VBox buttonBox = new VBox(10, deleteButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(10, 0, 0, 0));
 
@@ -240,9 +230,9 @@ public class EventManagamentWindow
 
         formGrid.add(eventIdLabel, 0, 0);
         formGrid.add(eventIdTextField, 1, 0);
-        formGrid.add(buttonBox, 0, 1, 2, 1); // Center the button and span two columns
+        formGrid.add(buttonBox, 0, 1, 2, 1);
 
-        Scene dialogScene = new Scene(formGrid, 200, 100); // Adjusted size for Room ID input
+        Scene dialogScene = new Scene(formGrid, 200, 100);
         deleteEvent.setScene(dialogScene);
 
         deleteEvent.initModality(Modality.APPLICATION_MODAL);

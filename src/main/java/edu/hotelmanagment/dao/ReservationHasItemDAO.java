@@ -28,7 +28,6 @@ public class ReservationHasItemDAO
 
             preparedStatement.executeUpdate();
 
-            //postavljanje istog primarnog kljuca na objektu kao i u bazi
             if(retVal != 0)
             {
                 resultSet = preparedStatement.getGeneratedKeys();

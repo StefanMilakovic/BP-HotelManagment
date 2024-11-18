@@ -57,8 +57,8 @@ public class ReservationManagementWindow
         deleteReservation.setOnAction(e -> deleteReservation());
 
 
-        addReservation.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;"); // Zeleno dugme sa crnim tekstom
-        deleteReservation.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;"); // Crveno dugme sa crnim tekstom
+        addReservation.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;");
+        deleteReservation.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;");
         editReservation.setStyle("-fx-background-color: #ded93a;-fx-text-fill: black;");
 
         TableColumn<Reservation, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
@@ -323,7 +323,7 @@ public class ReservationManagementWindow
             int selectedIndex = employeeComboBox.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0)
             {
-                int selectedEmployeeID = employeeIDs.get(selectedIndex); // Dohvatanje ID-a prema indeksu
+                int selectedEmployeeID = employeeIDs.get(selectedIndex);
                 employeeID.set(selectedEmployeeID);
             }
         });
@@ -522,8 +522,6 @@ public class ReservationManagementWindow
             {
                 try
                 {
-                    //
-                    // System.out.println("Reservation ID:"+reservationIDField.getText());
                     reservationID[0] = Integer.parseInt(reservationIDField.getText());
                     r[0] = ReservationDAO.selectById(reservationID[0]);
                 } catch (NumberFormatException ex)
@@ -657,7 +655,7 @@ public class ReservationManagementWindow
             }
         });
 
-        VBox buttonBox = new VBox(10, deleteButton); // Button with spacing
+        VBox buttonBox = new VBox(10, deleteButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(10, 0, 0, 0));
 
@@ -668,9 +666,9 @@ public class ReservationManagementWindow
 
         formGrid.add(reservationIdLabel, 0, 0);
         formGrid.add(reservationIdTextField, 1, 0);
-        formGrid.add(buttonBox, 0, 1, 2, 1); // Center the button and span two columns
+        formGrid.add(buttonBox, 0, 1, 2, 1);
 
-        Scene dialogScene = new Scene(formGrid, 250, 110); // Adjusted size for Room ID input
+        Scene dialogScene = new Scene(formGrid, 250, 110);
         dialogStage.setScene(dialogScene);
 
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -680,7 +678,7 @@ public class ReservationManagementWindow
     private void reloadGuest()
     {
         guests.clear();
-        guests = FXCollections.observableArrayList(GuestDAO.selectAll());  // Metoda koja učitava podatke iz baze
+        guests = FXCollections.observableArrayList(GuestDAO.selectAll());
         guestTableView.setItems(guests);
 
     }
@@ -688,7 +686,7 @@ public class ReservationManagementWindow
     private void reloadData()
     {
         reservations.clear();
-        reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());  // Metoda koja učitava podatke iz baze
+        reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());
         reservationTableView.setItems(reservations);
     }
 

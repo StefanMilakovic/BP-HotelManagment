@@ -75,7 +75,6 @@ public class ReservationDAO
 
             retVal = preparedStatement.executeUpdate();
 
-            //postavljanje istog primarnog kljuca na objektu kao i u bazi
             if(retVal != 0)
             {
                 resultSet = preparedStatement.getGeneratedKeys();
@@ -124,7 +123,7 @@ public class ReservationDAO
             preparedStatement.setInt(7,r.getEmployeeID());
             preparedStatement.setInt(8,r.getReservationID());
 
-            int rowsUpdated=preparedStatement.executeUpdate();//vraca broj azuriranih redova
+            int rowsUpdated=preparedStatement.executeUpdate();
 
             if (rowsUpdated > 0)
             {
@@ -157,7 +156,6 @@ public class ReservationDAO
             preparedStatement.setInt(1, id);
             retVal = preparedStatement.executeUpdate();
 
-            //opciono
             if (retVal > 0)
             {
                 System.out.println("Rows deleted: " + retVal);
@@ -193,7 +191,6 @@ public class ReservationDAO
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-
                 retVal=new Reservation(resultSet.getInt("ReservationID"),resultSet.getDate("Check_in_date"),
                         resultSet.getDate("Check_out_date"),resultSet.getInt("Number_of_Guests"),
                         resultSet.getInt("GuestID"),resultSet.getInt("RoomID"),

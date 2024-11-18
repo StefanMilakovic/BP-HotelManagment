@@ -199,7 +199,6 @@ public class RoomDAO
             preparedStatement.setInt(1, id);
             retVal = preparedStatement.executeUpdate();
 
-            //opciono
             if (retVal > 0)
             {
                 System.out.println("Rows deleted: " + retVal);

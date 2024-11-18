@@ -117,18 +117,17 @@ public class Reservation
         EmployeeID = employeeID;
     }
 
+
     @Override
     public String toString()
     {
-        return "Reservation{" +
-                "ReservationID=" + ReservationID +
+        return "ReservationID=" + ReservationID +
                 ", GuestID=" + guestID +
                 ", checkInDate=" + checkInDate +
                 ", checkOutDate=" + checkOutDate +
                 ", numberOfGuests=" + numberOfGuests +
                 ", roomID=" + roomID +
                 ", reservationTypeID=" + reservationTypeID +
-                ", EmployeeID=" + EmployeeID +
-                '}';
+                ", EmployeeID=" + EmployeeID;
     }
 }

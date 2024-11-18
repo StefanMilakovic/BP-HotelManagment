@@ -20,7 +20,7 @@ public class MainMenuWindow
         primaryStage.setTitle("Hotel Management");
         primaryStage.setResizable(false);
         Label titleLabel = new Label("Welcome, Manager!");
-        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10px;"); // Stilizuj natpis
+        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10px;");
 
         Button btnReservations = new Button("Reservations");
         Button btnGuests = new Button("Room Management");
@@ -51,7 +51,7 @@ public class MainMenuWindow
         vbox.getChildren().addAll(titleLabel, btnReservations, btnGuests, btnEmployees,btnItems,btnEvents, btnInvoices,btnReview);
 
 
-        Scene scene = new Scene(vbox, 400, 400);
+        Scene scene = new Scene(vbox, 400, 420);
         primaryStage.setTitle("Hotel Management System");
         primaryStage.setScene(scene);
         primaryStage.show();

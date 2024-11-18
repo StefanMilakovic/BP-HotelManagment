@@ -35,13 +35,11 @@ public class EmployeeManagementWindow
         editEmployee.setOnAction(e -> editEmployee());
         deleteEmployee.setOnAction(e -> deleteEmployee());
 
-// Set styles for the buttons (using the same colors as the reservation management example)
-        addEmployee.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;"); // Green button with white text
-        deleteEmployee.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;"); // Red button with white text
+        addEmployee.setStyle("-fx-background-color: #5fa62d; -fx-text-fill: white;");
+        deleteEmployee.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;");
         editEmployee.setStyle("-fx-background-color: #ded93a; -fx-text-fill: black;");
         employeeTableView = new TableView<>();
 
-// Define each column for the Employee TableView
         TableColumn<Employee, Integer> employeeIDColumn = new TableColumn<>("Employee ID");
         employeeIDColumn.setCellValueFactory(new PropertyValueFactory<>("EmployeeID"));
 
