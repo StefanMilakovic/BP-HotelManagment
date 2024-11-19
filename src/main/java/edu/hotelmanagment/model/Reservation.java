@@ -1,5 +1,9 @@
 package edu.hotelmanagment.model;
 
+import edu.hotelmanagment.dao.EmployeeDAO;
+import edu.hotelmanagment.dao.GuestDAO;
+import edu.hotelmanagment.dao.RoomDAO;
+
 import java.sql.Date;
 
 public class Reservation
@@ -24,6 +28,7 @@ public class Reservation
         this.reservationTypeID = reservationTypeID;
         EmployeeID = employeeID;
     }
+
     public Reservation() {}
 
     public Reservation(Date checkInDate, Date checkOutDate, Integer numberOfGuests, Integer guestID, Integer roomID, Integer reservationTypeID, Integer employeeID)

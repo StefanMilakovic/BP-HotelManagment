@@ -1,11 +1,12 @@
 package edu.hotelmanagment.gui;
 
+import edu.hotelmanagment.dao.ReservationViewDAO;
 import edu.hotelmanagment.model.Item;
 import edu.hotelmanagment.model.Reservation;
 import edu.hotelmanagment.model.ReservationHasItem;
 import edu.hotelmanagment.dao.ItemDAO;
-import edu.hotelmanagment.dao.ReservationDAO;
 import edu.hotelmanagment.dao.ReservationHasItemDAO;
+import edu.hotelmanagment.model.ReservationView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -83,49 +84,51 @@ public class ItemReservationWindow
         Spinner<Integer> quantitySpinner = new Spinner<>(1, 100, 1);
         quantitySpinner.setEditable(true);
 
-        TableView<Reservation> reservationTableView = new TableView<>();
+        TableView<ReservationView> reservationTableView = new TableView<>();
+        ObservableList<ReservationView> reservations;
 
-        TableColumn<Reservation, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
+
+        TableColumn<ReservationView, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
         reservationIDColumn.setCellValueFactory(new PropertyValueFactory<>("ReservationID"));
 
-        TableColumn<Reservation, java.sql.Date> checkInDateColumn = new TableColumn<>("Check-In Date");
+        TableColumn<ReservationView, java.sql.Date> checkInDateColumn = new TableColumn<>("Check-In Date");
         checkInDateColumn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
 
-        TableColumn<Reservation, java.sql.Date> checkOutDateColumn = new TableColumn<>("Check-Out Date");
+        TableColumn<ReservationView, java.sql.Date> checkOutDateColumn = new TableColumn<>("Check-Out Date");
         checkOutDateColumn.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
 
-        TableColumn<Reservation, Integer> numberOfGuestsColumn = new TableColumn<>("Number of Guests");
+        TableColumn<ReservationView, Integer> numberOfGuestsColumn = new TableColumn<>("Number of Guests");
         numberOfGuestsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfGuests"));
 
-        TableColumn<Reservation, Integer> guestIDColumn = new TableColumn<>("Guest ID");
-        guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("guestID"));
+        TableColumn<ReservationView, String> guestNameColumn = new TableColumn<>("Guest Name");
+        guestNameColumn.setCellValueFactory(new PropertyValueFactory<>("guestName"));
 
-        TableColumn<Reservation, Integer> roomIDColumn = new TableColumn<>("Room ID");
+        TableColumn<ReservationView, Integer> roomIDColumn = new TableColumn<>("Room ID");
         roomIDColumn.setCellValueFactory(new PropertyValueFactory<>("roomID"));
 
-        TableColumn<Reservation, Integer> reservationTypeIDColumn = new TableColumn<>("Reservation Type ID");
-        reservationTypeIDColumn.setCellValueFactory(new PropertyValueFactory<>("reservationTypeID"));
+        TableColumn<ReservationView, String> reservationTypeColumn = new TableColumn<>("Reservation Type");
+        reservationTypeColumn.setCellValueFactory(new PropertyValueFactory<>("reservationType"));
 
-        TableColumn<Reservation, Integer> employeeIDColumn = new TableColumn<>("Employee ID");
-        employeeIDColumn.setCellValueFactory(new PropertyValueFactory<>("EmployeeID"));
+        TableColumn<ReservationView, String> employeeNameColumn = new TableColumn<>("Employee Name");
+        employeeNameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
 
         reservationTableView.getColumns().addAll(
                 reservationIDColumn, checkInDateColumn, checkOutDateColumn,
-                numberOfGuestsColumn, guestIDColumn, roomIDColumn,
-                reservationTypeIDColumn, employeeIDColumn
+                numberOfGuestsColumn, guestNameColumn, roomIDColumn,
+                reservationTypeColumn, employeeNameColumn
         );
 
-        ObservableList<Reservation> reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());
+        reservations = FXCollections.observableArrayList(ReservationViewDAO.selectAll());
         reservationTableView.setItems(reservations);
 
         reservationTableView.setOnMouseClicked(event -> {
-            Reservation selectedReservation = reservationTableView.getSelectionModel().getSelectedItem();
+            ReservationView selectedReservation = reservationTableView.getSelectionModel().getSelectedItem();
             if (selectedReservation != null) {
                 reservationID=selectedReservation.getReservationID();}
         });
 
         reservationTableView.setRowFactory(tv -> {
-            TableRow<Reservation> row = new TableRow<>();
+            TableRow<ReservationView> row = new TableRow<>();
             row.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
                 if (isNowSelected) {
                     row.setStyle("-fx-background-color: #5fa62d;");
