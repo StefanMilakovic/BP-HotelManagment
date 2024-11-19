@@ -10,12 +10,8 @@ import java.util.List;
 
 public class EventHasGuestDAO
 {
-    ;
     private static final String SQL_SELECT="select * from event_has_guest";
     private static final String SQL_INSERT="insert into event_has_guest (EventID,GuestID)values(?,?)";
-
-
-
 
     public static List<EventHasGuest> selectAll()
     {
@@ -27,7 +23,6 @@ public class EventHasGuestDAO
             connection = DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(SQL_SELECT);
             resultSet = preparedStatement.executeQuery();
-
 
             while (resultSet.next())
                 retVal.add(new EventHasGuest(resultSet.getInt("EventID"),resultSet.getInt("GuestID")));

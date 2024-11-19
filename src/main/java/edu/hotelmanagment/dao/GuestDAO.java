@@ -78,7 +78,6 @@ public class GuestDAO
                 resultSet = preparedStatement.getGeneratedKeys();
                 if(resultSet.next())
                 {
-                    //System.out.println(resultSet.getInt(1));
                     g.setGuestID(resultSet.getInt(1));
                     System.out.println(g.getGuestID());
                 }

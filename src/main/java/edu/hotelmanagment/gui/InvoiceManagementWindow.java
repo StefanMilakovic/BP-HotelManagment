@@ -167,6 +167,7 @@ public class InvoiceManagementWindow
             }
             InvoiceDAO.generateNewInvoice(guestTableView.getSelectionModel().getSelectedItem().getGuestID(),
                     reservationComboBox.getSelectionModel().getSelectedItem().getReservationID(),paymentType);
+            loadInvoices();
 
         });
 

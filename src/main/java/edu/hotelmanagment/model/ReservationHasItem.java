@@ -71,7 +71,7 @@ public class ReservationHasItem
         ReservationID = reservationID;
     }
 
-    /*
+
     public Double getTotalPrice()
     {
         return totalPrice;
@@ -82,7 +82,6 @@ public class ReservationHasItem
         this.totalPrice = totalPrice;
     }
 
-     */
 
     @Override
     public String toString()

@@ -61,42 +61,7 @@ public class ReservationManagementWindow
         deleteReservation.setStyle("-fx-background-color: #de3a3a; -fx-text-fill: white;");
         editReservation.setStyle("-fx-background-color: #ded93a;-fx-text-fill: black;");
 
-        /*
-        TableColumn<Reservation, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
-        reservationIDColumn.setCellValueFactory(new PropertyValueFactory<>("ReservationID"));
 
-        TableColumn<Reservation, java.sql.Date> checkInDateColumn = new TableColumn<>("Check-In Date");
-        checkInDateColumn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
-
-        TableColumn<Reservation, java.sql.Date> checkOutDateColumn = new TableColumn<>("Check-Out Date");
-        checkOutDateColumn.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
-
-        TableColumn<Reservation, Integer> numberOfGuestsColumn = new TableColumn<>("Number of Guests");
-        numberOfGuestsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfGuests"));
-
-        TableColumn<Reservation, Integer> guestIDColumn = new TableColumn<>("Guest ID");
-        guestIDColumn.setCellValueFactory(new PropertyValueFactory<>("guestID"));
-
-        TableColumn<Reservation, Integer> roomIDColumn = new TableColumn<>("Room ID");
-        roomIDColumn.setCellValueFactory(new PropertyValueFactory<>("roomID"));
-
-        TableColumn<Reservation, Integer> reservationTypeIDColumn = new TableColumn<>("Reservation Type ID");
-        reservationTypeIDColumn.setCellValueFactory(new PropertyValueFactory<>("reservationTypeID"));
-
-        TableColumn<Reservation, Integer> employeeIDColumn = new TableColumn<>("Employee ID");
-        employeeIDColumn.setCellValueFactory(new PropertyValueFactory<>("EmployeeID"));
-
-
-        reservationTableView.getColumns().addAll(
-                reservationIDColumn, checkInDateColumn, checkOutDateColumn,
-                numberOfGuestsColumn, guestIDColumn, roomIDColumn,
-                reservationTypeIDColumn, employeeIDColumn
-        );
-
-        reservations = FXCollections.observableArrayList(ReservationDAO.selectAll());
-        reservationTableView.setItems(reservations);
-
-         */
         TableColumn<ReservationView, Integer> reservationIDColumn = new TableColumn<>("Reservation ID");
         reservationIDColumn.setCellValueFactory(new PropertyValueFactory<>("ReservationID"));
 
@@ -121,14 +86,12 @@ public class ReservationManagementWindow
         TableColumn<ReservationView, String> employeeNameColumn = new TableColumn<>("Employee Name");
         employeeNameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
 
-// Dodavanje kolona u tabelu
         reservationTableView.getColumns().addAll(
                 reservationIDColumn, checkInDateColumn, checkOutDateColumn,
                 numberOfGuestsColumn, guestNameColumn, roomIDColumn,
                 reservationTypeColumn, employeeNameColumn
         );
 
-// Postavljanje podataka iz ReservationViewDAO
         reservations = FXCollections.observableArrayList(ReservationViewDAO.selectAll());
         reservationTableView.setItems(reservations);
 

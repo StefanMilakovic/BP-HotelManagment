@@ -14,7 +14,6 @@ public class EventDAO
     private static final String SQL_INSERT="insert into event (Name,Date,Location,Description,EmployeeID)values(?,?,?,?,?)";
     private static final String SQL_UPDATE="update event set Name=?,Date=?,Location=?,Description=?,EmployeeID where EventID=?";
     private static final String SQL_DELETE="delete from event where EventID=?";
-    private static final String SQL_SELECT_BY_ID = "select * from event where EventID=?";
 
     public static List<Event> selectAll()
     {
@@ -169,47 +168,4 @@ public class EventDAO
         return retVal;
     }
 
-    /*
-    public static Guest selectById(int id)
-    {
-        Guest retVal = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try
-        {
-            connection=DBUtil.getConnection();
-            preparedStatement=connection.prepareStatement(SQL_SELECT_BY_ID,Statement.NO_GENERATED_KEYS);
-            preparedStatement.setInt(1,id);
-            resultSet=preparedStatement.executeQuery();
-            if(resultSet.next())
-            {
-                retVal=new Event(resultSet.getInt("EventID"),resultSet.getString("Name"),
-                        resultSet.getDate("Date"),resultSet.getString("Location"),
-                        resultSet.getString("Description"),resultSet.getInt("EmployeeID"))
-            }
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            ConnectionPool.getInstance().checkIn(connection);
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return retVal;
-    }
-
-     */
 }

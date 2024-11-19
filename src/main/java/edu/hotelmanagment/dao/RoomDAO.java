@@ -11,19 +11,12 @@ import java.util.List;
 
 public class RoomDAO
 {
-    //private static final String SQL_SELECT="select * from room";
-    //private static final String SQL_INSERT="insert into room (Room_Number,Floor,RoomTypeID,BedTypeID)values(?,?,,?,?)";
     private static final String SQL_INSERT="{call AddNewRoom(?,?,?,?)}";
-
-    //private static final String SQL_UPDATE="update room set Room_Number=?,Floor=?,RoomTypeID=?,BedTypeID=? where RoomID=?";
     private static final String SQL_UPDATE="{call UpdateRoom(?,?,?,?,?)}";
     private static final String SQL_DELETE="delete from room where RoomID=?";
     private static final String SQL_SELECT_BY_ID = "select * from room where RoomID=?";
     private static final String SQL_SELECT="SELECT * FROM hotel_database.room_details_view;";
-
     private static final String SQL_AVAILABLE_ROOMS="{call GetAvailableRooms(?,?)}";
-
-
 
 
     public static List<Room> selectAll()

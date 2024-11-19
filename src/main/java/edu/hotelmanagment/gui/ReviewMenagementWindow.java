@@ -165,14 +165,6 @@ public class ReviewMenagementWindow
             int rating = ratingSpinner.getValue();
             String description = descriptionField.getText();
 
-            /*
-            if (description.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a review description.");
-                alert.showAndWait();
-            }
-
-             */
-
             Review newReview = new Review(null,guestTableView.getSelectionModel().getSelectedItem().getGuestID(),
                     rating,description,reservationComboBox.getSelectionModel().getSelectedItem().getReservationID());
 

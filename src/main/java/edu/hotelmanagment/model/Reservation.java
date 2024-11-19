@@ -1,9 +1,5 @@
 package edu.hotelmanagment.model;
 
-import edu.hotelmanagment.dao.EmployeeDAO;
-import edu.hotelmanagment.dao.GuestDAO;
-import edu.hotelmanagment.dao.RoomDAO;
-
 import java.sql.Date;
 
 public class Reservation
