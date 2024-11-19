@@ -21,7 +21,7 @@ public class ReviewMenagementWindow
     ObservableList<Guest> guests;
 
     TableView<Review> reviewTableView = new TableView<>();
-    ObservableList<Guest> reviews;
+    ObservableList<Review> reviews;
 
     public ReviewMenagementWindow()
     {
@@ -52,7 +52,8 @@ public class ReviewMenagementWindow
                 descriptionColumn, reservationIDColumn
         );
 
-        reviewTableView.setItems(FXCollections.observableArrayList(ReviewDAO.selectAll()));
+        reviews=FXCollections.observableArrayList(ReviewDAO.selectAll());
+        reviewTableView.setItems(reviews);
 
         Label averageRatingLabel = new Label("Average Rating: " + ReviewDAO.getAverageRating());
 
@@ -96,6 +97,7 @@ public class ReviewMenagementWindow
                 guestIDColumn, firstNameColumn, lastNameColumn,
                 passportNumberColumn, emailColumn, phoneNumberColumn
         );
+
 
         guestTableView.setItems(FXCollections.observableArrayList(GuestDAO.selectAll()));
 
@@ -188,7 +190,8 @@ public class ReviewMenagementWindow
     public void reloadData()
     {
         reviews.clear();
-        reviewTableView.setItems(FXCollections.observableArrayList(ReviewDAO.selectAll()));
+        reviews=FXCollections.observableArrayList(ReviewDAO.selectAll());
+        reviewTableView.setItems(reviews);
     }
 
 }

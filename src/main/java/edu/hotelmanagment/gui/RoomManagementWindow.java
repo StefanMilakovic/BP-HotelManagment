@@ -356,24 +356,24 @@ public class RoomManagementWindow {
             System.out.println("Room ID confirmed: " + roomId);
         });
 
-        Label workerLabel = new Label("Select Employee:");
-        ComboBox<Employee> workerComboBox = new ComboBox<>();
-        workerComboBox.setPromptText("Select Employee");
-        workerComboBox.setPrefWidth(150);
+        Label employeeLabel = new Label("Select Employee:");
+        ComboBox<Employee> employeeComboBox = new ComboBox<>();
+        employeeComboBox.setPromptText("Select Employee");
+        employeeComboBox.setPrefWidth(150);
 
         List<Employee> employees = EmployeeDAO.selectHousekeepers();
         for (Employee employee : employees) {
-            workerComboBox.getItems().add(employee);
+            employeeComboBox.getItems().add(employee);
         }
 
         Button addButton = new Button("Add");
         addButton.setOnAction(e -> {
-            Employee selectedWorker = workerComboBox.getValue();
+            Employee selectedWorker = employeeComboBox.getValue();
             String roomId = roomIdTextField.getText();
             LocalDate date = datePicker.getValue();
 
             if (selectedWorker == null || roomId.isEmpty() || date == null) {
-                System.out.println("Please select a worker, enter a valid Room ID, and select a date.");
+                System.out.println("Please select an employee, enter a valid Room ID, and select a date.");
                 return;
             }
 
@@ -392,8 +392,8 @@ public class RoomManagementWindow {
         gridPane.add(confirmButton, 1, 1);
         gridPane.add(dateLabel, 0, 2);
         gridPane.add(datePicker, 1, 2);
-        gridPane.add(workerLabel, 0, 3);
-        gridPane.add(workerComboBox, 1, 3);
+        gridPane.add(employeeLabel, 0, 3);
+        gridPane.add(employeeComboBox, 1, 3);
         gridPane.add(addButton, 1, 4);
 
         Scene scene = new Scene(gridPane, 300, 230);
